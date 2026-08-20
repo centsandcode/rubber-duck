@@ -1,6 +1,6 @@
 {
   "description": "Behavioral evals for the rubber-duck skill. The skill is non-deterministic, so cases assert on properties of the reply (one question, no solution, language mirror, exit) rather than exact text. Run with grade.py.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "cases": [
     {
       "id": "activate-explicit",

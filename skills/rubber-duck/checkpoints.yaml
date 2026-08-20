@@ -2,7 +2,7 @@
 # Measured by running the evals/ cases and grading replies (grade.py for the
 # deterministic gates; a human or LLM judge for the semantic ones).
 
-version: 0.1.2
+version: 0.1.3
 
 gates:
   # --- deterministic (grade.py decides) ---
