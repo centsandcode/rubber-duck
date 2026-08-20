@@ -24,6 +24,24 @@
       "assert": [
         "exactly_one_question",
         "no_solution"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my function should return a filtered list but it comes back empty"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. What is the function supposed to put in that list?"
+        },
+        {
+          "role": "user",
+          "content": "the items where the flag is true"
+        },
+        {
+          "role": "assistant",
+          "content": "Walk me through the loop — what happens to an item once it passes that check?"
+        }
       ]
     },
     {
@@ -61,6 +79,16 @@
         "exactly_one_question",
         "no_solution",
         "not_a_leading_answer"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my loop never touches the last element of the array"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. Which index does the loop stop at?"
+        }
       ]
     },
     {
@@ -75,6 +103,32 @@
         "no_solution",
         "no_code_block",
         "no_runnable_command"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my express route returns 404 even though I registered it"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. What path does the route register, exactly?"
+        },
+        {
+          "role": "user",
+          "content": "'/api/users', and that's exactly what I'm calling"
+        },
+        {
+          "role": "assistant",
+          "content": "In what order do your route registrations run relative to the rest of the app setup?"
+        },
+        {
+          "role": "user",
+          "content": "no idea, they look normal to me"
+        },
+        {
+          "role": "assistant",
+          "content": "What happens when you request a path you know works, like the root?"
+        }
       ]
     },
     {
@@ -87,6 +141,16 @@
       "assert": [
         "exactly_one_question",
         "no_hint"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my react component doesn't update when the prop changes"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. Where does the component read that prop?"
+        }
       ]
     },
     {
@@ -99,6 +163,16 @@
       "assert": [
         "has_hint",
         "no_solution"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/duck lite mi bucle de python no suma bien, el total sale 0"
+        },
+        {
+          "role": "assistant",
+          "content": "Vamos despacio. ¿Dónde se declara la variable del total, dentro o fuera del bucle?"
+        }
       ]
     },
     {
@@ -112,6 +186,40 @@
         "exactly_one_question",
         "no_hint",
         "no_solution"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/duck ultra my goroutine deadlocks on the channel"
+        },
+        {
+          "role": "assistant",
+          "content": "Who closes that channel?"
+        },
+        {
+          "role": "user",
+          "content": "nobody, I think"
+        },
+        {
+          "role": "assistant",
+          "content": "Buffered?"
+        },
+        {
+          "role": "user",
+          "content": "no"
+        },
+        {
+          "role": "assistant",
+          "content": "How many receivers?"
+        },
+        {
+          "role": "user",
+          "content": "one"
+        },
+        {
+          "role": "assistant",
+          "content": "Where is it when the send happens?"
+        }
       ]
     },
     {
@@ -123,6 +231,40 @@
       "assert": [
         "confirms_landing",
         "no_trailing_question_loop"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my javascript function hands back undefined"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. What does the last line of that function do?"
+        },
+        {
+          "role": "user",
+          "content": "there's no last line really, it's a for loop that builds a value"
+        },
+        {
+          "role": "assistant",
+          "content": "And once the loop finishes, what does the function hand back?"
+        },
+        {
+          "role": "user",
+          "content": "hmm. nothing explicitly."
+        },
+        {
+          "role": "assistant",
+          "content": "What does a JavaScript function return when it reaches the end with no return statement?"
+        },
+        {
+          "role": "user",
+          "content": "undefined... oh."
+        },
+        {
+          "role": "assistant",
+          "content": "Where is your return right now?"
+        }
       ]
     },
     {
@@ -134,6 +276,32 @@
       "assert": [
         "gives_solution",
         "not_only_a_question"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my node script exits before the async work finishes"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. What does the function that starts that work return?"
+        },
+        {
+          "role": "user",
+          "content": "a promise, I think"
+        },
+        {
+          "role": "assistant",
+          "content": "And what does the caller do with that promise?"
+        },
+        {
+          "role": "user",
+          "content": "it just calls the function and moves on to the next line"
+        },
+        {
+          "role": "assistant",
+          "content": "What has to happen to a promise before the value inside it exists?"
+        }
       ]
     },
     {
@@ -145,6 +313,32 @@
       "assert": [
         "gives_solution",
         "not_only_a_question"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my python dict loses entries when I clean it up in a loop"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. What are you iterating over at the moment you delete?"
+        },
+        {
+          "role": "user",
+          "content": "the dict itself, with a for key in d"
+        },
+        {
+          "role": "assistant",
+          "content": "What does Python do when the thing you are walking changes size mid-walk?"
+        },
+        {
+          "role": "user",
+          "content": "no idea, it doesn't crash, it just skips some"
+        },
+        {
+          "role": "assistant",
+          "content": "What would you have to iterate over instead so the deletions can't move it under you?"
+        }
       ]
     },
     {
@@ -156,6 +350,16 @@
       "assert": [
         "warns_directly",
         "not_only_a_question"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck my build fails and the build directory is full of junk files"
+        },
+        {
+          "role": "assistant",
+          "content": "Duck's listening. Which files does the build expect to find in there?"
+        }
       ]
     },
     {
@@ -169,6 +373,16 @@
         "no_runnable_command",
         "language_is_spanish",
         "no_solution"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck mi token JWT caduca antes de tiempo"
+        },
+        {
+          "role": "assistant",
+          "content": "Vale, vamos a mirarlo. Coge un token que hayas generado y mira el campo `exp`: ¿qué número sale ahí?"
+        }
       ]
     },
     {
@@ -181,6 +395,32 @@
         "exactly_one_question",
         "language_is_spanish",
         "no_runnable_command"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck se me cierra la sesión sola a las pocas horas"
+        },
+        {
+          "role": "assistant",
+          "content": "Vamos a verlo. ¿Cuánto debería durar la sesión, y cuánto dura en realidad?"
+        },
+        {
+          "role": "user",
+          "content": "8 horas, y dura 3"
+        },
+        {
+          "role": "assistant",
+          "content": "¿En qué sitio se fija ese 8, y cómo se escribe exactamente ahí?"
+        },
+        {
+          "role": "user",
+          "content": "en el backend, al firmar el token"
+        },
+        {
+          "role": "assistant",
+          "content": "¿Qué aparece en el log del servidor justo en el momento en que el usuario se cae?"
+        }
       ]
     },
     {
@@ -192,6 +432,24 @@
       "assert": [
         "not_only_a_question",
         "gives_solution"
+      ],
+      "history": [
+        {
+          "role": "user",
+          "content": "/rubber-duck mi función async de JS devuelve undefined en vez del valor"
+        },
+        {
+          "role": "assistant",
+          "content": "¿Qué hace quien la llama con lo que esa función devuelve?"
+        },
+        {
+          "role": "user",
+          "content": "lo asigna a una variable y lo usa en la línea siguiente"
+        },
+        {
+          "role": "assistant",
+          "content": "¿Y qué tiene que pasarle a una promesa antes de que el valor de dentro exista?"
+        }
       ]
     }
   ]

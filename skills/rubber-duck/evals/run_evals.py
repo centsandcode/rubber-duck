@@ -63,13 +63,17 @@ def context_note(case: dict) -> str:
 
 def get_reply(client, case: dict, arm: str) -> str:
     system = skill_system() if arm == "skill" else ""
-    if arm == "skill" and case["turn"] > 1:
+    history = case.get("history", [])
+    # Both arms replay the same transcript. Without a stated problem, "give the
+    # solution" and "confirm the landing" are unpassable for either arm, and the
+    # control ends up answering "I have no context" instead of handing over a fix.
+    if arm == "skill" and case["turn"] > 1 and not history:
         system += "\n\n" + context_note(case)
     resp = client.messages.create(
         model=MODEL,
         max_tokens=1024,
         system=system or anthropic.NOT_GIVEN,
-        messages=[{"role": "user", "content": case["user"]}],
+        messages=history + [{"role": "user", "content": case["user"]}],
     )
     return "".join(b.text for b in resp.content if b.type == "text").strip()
 
