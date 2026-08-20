@@ -42,16 +42,19 @@ claude plugin list
 Activation is **explicit only** in Claude Code — the skill never hijacks a
 normal request. Turn it on with:
 
-- `/rubber-duck` or `/duck`
+- `/rubber-duck:rubber-duck`
 - or ask for it directly: "rubber duck mode", "socratic mode", "ask me
   questions instead of giving me the answer"
+
+Installed plugins prefix everything with the plugin name, which is why the
+command reads `rubber-duck:rubber-duck` rather than plain `/rubber-duck`.
 
 Natural phrases like "I'm stuck" or "weird bug" do **not** activate it in
 Claude Code by design. (Other agents that read [`AGENTS.md`](AGENTS.md) may
 honor those phrases too; see that file.)
 
-Exit any time with `/duck-off`, "just tell me the answer", or the same request
-in your own language.
+Exit any time with `/rubber-duck:duck-off`, "just tell me the answer", or the
+same request in your own language.
 
 ### Intensity levels
 
@@ -59,9 +62,12 @@ Match the amount of scaffolding to your experience:
 
 | Command | For whom | Behavior |
 |---------|----------|----------|
-| `/duck lite` | Beginners | Warm questions with context, hint after 1 stuck exchange |
-| `/duck full` | Default | Neutral standalone questions, hint after 3 |
-| `/duck ultra` | Advanced | Terse questions, no hints ever |
+| `/rubber-duck:duck lite` | Beginners | Warm questions with context, hint after 1 stuck exchange |
+| `/rubber-duck:duck full` | Default | Neutral standalone questions, hint after 3 |
+| `/rubber-duck:duck ultra` | Advanced | Terse questions, no hints ever |
+
+`duck` also starts the mode if it is not running, so you can go straight to the
+level you want.
 
 The duck replies in whatever language you write in.
 

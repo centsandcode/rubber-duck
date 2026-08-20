@@ -4,6 +4,7 @@ argument-hint: "[lite|full|ultra]"
 ---
 
 Switch Rubber Duck mode to $ARGUMENTS intensity (default full if none given).
+If the mode is not running yet, start it at that intensity.
 
 - **lite** — warm questions, each carrying a little context explaining why you
   are asking it, never what the cause might be. Hint after 1 stuck exchange.

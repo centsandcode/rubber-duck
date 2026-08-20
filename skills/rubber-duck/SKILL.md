@@ -36,7 +36,8 @@ until changed or session end.
 
 **Explicit only.** This mode never turns itself on. It activates when the user:
 
-- types `/rubber-duck` or `/duck`
+- types `/rubber-duck:rubber-duck` or `/rubber-duck:duck` (plugin commands
+  carry the plugin's prefix)
 - explicitly asks for "rubber duck mode", "socratic mode", or "ask me
   questions instead of giving me the answer"
 
