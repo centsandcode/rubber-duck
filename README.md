@@ -91,8 +91,8 @@ The duck replies in whatever language you write in.
 
 The same 16 cases, run twice against `claude-opus-5`: once with the skill as
 the system prompt, once with no system prompt at all (the control). Each case
-replays a real conversation and grades the next reply. 42 gradeable
-assertions per arm.
+replays a real conversation and grades the next reply — mechanical properties
+in code, judgment calls with an LLM judge.
 
 | Gate | Skill | Control |
 |------|-------|---------|
@@ -103,34 +103,38 @@ assertions per arm.
 | No hint where the level forbids one | **100%** | 0% |
 | Question does not smuggle the diagnosis | **100%** | 0% |
 | Hint present where the level calls for one | **100%** | 50% |
+| Confirms the answer instead of probing on | **100%** | 0% |
 | Replies in the user's language | 100% | 100% |
 | Hands over the answer on exit | 100% | 100% |
-| **Total** | **42/42 — 100%** | **24/42 — 57%** |
+| Warns directly about `rm -rf /` | 100% | not measured¹ |
+| **Total** | **44/44 — 100%** | **24/43 — 56%** |
+
+¹ On that case the control came back with `stop_reason: refusal` — the safety
+classifier declined the prompt, so there was no reply to grade. Reporting it
+as 0% would claim the control ignores destructive commands, which is not what
+happened. Refusals are skipped, not scored, which is why its denominator is 43.
 
 The row that matters is *withholds the solution*. The control is not broken
 when it fails that one — solving is what a coding agent is for. The point is
 that you can now choose.
 
-**What these numbers are not.** Two gates are excluded from the totals above
-because the measurement, not the model, was at fault:
+### What to distrust
 
-- *Confirms the landing* — the judge was asked whether the reply validates the
-  user's answer "and stops", while the spec tells the duck to validate and
-  then offer a next step. Both arms were marked down for following the spec.
-  The criterion is fixed in `grade.py`, but the run above predates the fix, so
-  the gate is left out rather than reported from a broken measurement.
-- *Warns directly about destructive commands* — on the `rm -rf /` case the
-  control came back with `stop_reason: refusal`: the safety classifier
-  declined the prompt, so there was no reply to grade. Reporting that as 0%
-  would claim the control ignores destructive commands, which is not what
-  happened. Refusals are now skipped rather than scored.
-
-Two more caveats worth knowing before you trust the gap:
-
-- The judge for the semantic gates is the same model family being graded.
-- The control receives the same replayed transcript, in which the assistant
+- **The judge is the same model family it grades.** The mechanical gates
+  (question count, code blocks, language) are decided in code and are not
+  subject to this; the judgment calls are.
+- **The control sees the same replayed transcript**, in which the assistant
   has been asking Socratic questions. That can pull it toward the same style
   by imitation, which shrinks the measured gap rather than inflating it.
+- **One criterion was rewritten mid-benchmark.** *Confirms the answer* asked
+  the judge whether the reply validates the user "and stops", while the spec
+  tells the duck to validate and then offer a next step — so both arms were
+  marked down for doing the right thing. The wording was fixed in `grade.py`
+  and that case was re-run for both arms rather than dropped: the skill passes
+  it, the control still fails by asking another question instead of confirming.
+  The full history of that fix is in the commit log.
+- **Sixteen cases is small.** It catches whether a behaviour holds at all, not
+  how often it holds at the margins.
 
 Reproduce any of it with the commands below.
 
