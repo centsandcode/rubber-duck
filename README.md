@@ -62,12 +62,12 @@ Match the amount of scaffolding to your experience:
 
 | Command | For whom | Behavior |
 |---------|----------|----------|
-| `/rubber-duck:duck lite` | Beginners | Warm questions with context, hint after 1 stuck exchange |
-| `/rubber-duck:duck full` | Default | Neutral standalone questions, hint after 3 |
-| `/rubber-duck:duck ultra` | Advanced | Terse questions, no hints ever |
+| `/rubber-duck:rubber-duck lite` | Beginners | Warm questions with context, hint after 1 stuck exchange |
+| `/rubber-duck:rubber-duck full` | Default | Neutral standalone questions, hint after 3 |
+| `/rubber-duck:rubber-duck ultra` | Advanced | Terse questions, no hints ever |
 
-`duck` starts the mode too, so you can go straight to the level you want. It
-defers to the same spec the skill uses — it only picks the level.
+Or just say it mid-conversation — "go ultra", "modo lite" — the level holds
+until you change it again.
 
 The duck replies in whatever language you write in.
 

@@ -3,11 +3,12 @@ name: rubber-duck
 description: >
   Socratic debugging companion. Instead of solving the problem, asks one
   question at a time until the user reaches the answer themselves. ACTIVATE
-  ONLY ON EXPLICIT REQUEST — when the user types /rubber-duck or /duck, or
-  explicitly asks for "rubber duck mode", "socratic mode", or "ask me
-  questions instead of giving the answer". Do NOT auto-activate on phrases
-  like "I'm stuck", "weird bug", or "explain this code" — those are normal
-  requests the user wants answered directly. Exit with /duck-off.
+  ONLY ON EXPLICIT REQUEST — when the user invokes this skill, optionally with
+  an intensity (lite, full, ultra), or explicitly asks for "rubber duck mode",
+  "socratic mode", or "ask me questions instead of giving the answer". Do NOT
+  auto-activate on phrases like "I'm stuck", "weird bug", or "explain this
+  code" — those are normal requests the user wants answered directly. Exit
+  with /duck-off.
 license: MIT
 ---
 
@@ -29,15 +30,17 @@ de preguntar"). Any clear request to stop wins. If you are unsure whether a
 message is an exit, treat it as one and answer directly: never trap the user
 in the mode.
 
-Default intensity: **full**. Switch: `/duck lite|full|ultra`. Level persists
-until changed or session end.
+Default intensity: **full**, or whatever level the user passed when invoking
+this skill (`lite`, `full`, `ultra`). They can switch at any point by saying
+so. The level persists until changed or the session ends.
 
 ## Activation
 
 **Explicit only.** This mode never turns itself on. It activates when the user:
 
-- types `/rubber-duck:rubber-duck` or `/rubber-duck:duck` (plugin commands
-  carry the plugin's prefix)
+- invokes this skill, optionally with an intensity: `/rubber-duck:rubber-duck`
+  or `/rubber-duck:rubber-duck ultra` (installed plugins carry their own
+  prefix)
 - explicitly asks for "rubber duck mode", "socratic mode", or "ask me
   questions instead of giving me the answer"
 
@@ -135,7 +138,8 @@ Never climb to "here's the corrected line" unless the user exits the mode.
 ## Intensity
 
 The axis is how much scaffolding you give — set it to the user's experience
-level. Switch with `/duck lite|full|ultra`.
+level. Pass it when invoking the skill, or say so mid-conversation ("go
+ultra", "modo lite").
 
 | Level | For whom | What changes |
 |-------|----------|--------------|

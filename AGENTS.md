@@ -52,7 +52,8 @@ verbatim; only your own words get translated.
 
 ## Intensity
 
-Default **full**. Adjust to the user's experience with `/duck lite|full|ultra`:
+Default **full**. The user picks the level when they ask for the mode, or
+changes it mid-conversation by saying so ("go ultra", "modo lite"):
 
 - **lite** — beginners: warm, each question carries a little context, hint
   after 1 stuck exchange.
