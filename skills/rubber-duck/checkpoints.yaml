@@ -2,17 +2,17 @@
 # Measured by running the evals/ cases and grading replies (grade.py for the
 # deterministic gates; a human or LLM judge for the semantic ones).
 
-version: 0.1.0
+version: 0.1.1
 
 gates:
   # --- deterministic (grade.py decides) ---
   - id: one-question-per-turn
-    rule: Every active-mode reply contains exactly one question.
+    rule: Every active-mode reply contains exactly one question mark.
     measure: deterministic
     target: 100%        # zero tolerance — the core promise
 
   - id: no-code-block-while-active
-    rule: No code block in any reply until the user exits the mode.
+    rule: No code block, snippet, or runnable command in any reply until the user exits the mode.
     measure: deterministic
     target: 100%
 

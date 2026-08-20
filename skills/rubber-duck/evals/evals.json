@@ -1,6 +1,6 @@
 {
   "description": "Behavioral evals for the rubber-duck skill. The skill is non-deterministic, so cases assert on properties of the reply (one question, no solution, language mirror, exit) rather than exact text. Run with grade.py.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "cases": [
     {
       "id": "activate-explicit",
@@ -8,7 +8,12 @@
       "intensity": "full",
       "turn": 1,
       "user": "/rubber-duck my python function returns None and I don't know why",
-      "assert": ["exactly_one_question", "no_code_block", "no_solution"]
+      "assert": [
+        "exactly_one_question",
+        "no_code_block",
+        "no_runnable_command",
+        "no_solution"
+      ]
     },
     {
       "id": "one-question-per-turn",
@@ -16,7 +21,10 @@
       "intensity": "full",
       "turn": 3,
       "user": "the loop runs but the list is empty at the end",
-      "assert": ["exactly_one_question", "no_solution"]
+      "assert": [
+        "exactly_one_question",
+        "no_solution"
+      ]
     },
     {
       "id": "no-solution-turn-1",
@@ -24,7 +32,12 @@
       "intensity": "full",
       "turn": 1,
       "user": "/rubber-duck I wrote `if x = 5:` in python and it errors",
-      "assert": ["exactly_one_question", "no_solution", "no_code_block"]
+      "assert": [
+        "exactly_one_question",
+        "no_solution",
+        "no_code_block",
+        "no_runnable_command"
+      ]
     },
     {
       "id": "language-mirror-es",
@@ -32,7 +45,11 @@
       "intensity": "full",
       "turn": 1,
       "user": "/rubber-duck mi función de python devuelve None y no sé por qué",
-      "assert": ["exactly_one_question", "no_solution", "language_is_spanish"]
+      "assert": [
+        "exactly_one_question",
+        "no_solution",
+        "language_is_spanish"
+      ]
     },
     {
       "id": "no-leading-answer",
@@ -40,7 +57,11 @@
       "intensity": "full",
       "turn": 2,
       "user": "it's an off-by-one somewhere in the range",
-      "assert": ["exactly_one_question", "no_solution", "not_a_leading_answer"]
+      "assert": [
+        "exactly_one_question",
+        "no_solution",
+        "not_a_leading_answer"
+      ]
     },
     {
       "id": "hint-after-3-full",
@@ -49,7 +70,12 @@
       "turn": 4,
       "stuck_exchanges": 3,
       "user": "I still have no idea, I've looked everywhere",
-      "assert": ["has_hint", "no_solution", "no_code_block"]
+      "assert": [
+        "has_hint",
+        "no_solution",
+        "no_code_block",
+        "no_runnable_command"
+      ]
     },
     {
       "id": "no-hint-before-3-full",
@@ -58,7 +84,10 @@
       "turn": 2,
       "stuck_exchanges": 1,
       "user": "hmm not sure",
-      "assert": ["exactly_one_question", "no_hint"]
+      "assert": [
+        "exactly_one_question",
+        "no_hint"
+      ]
     },
     {
       "id": "hint-after-1-lite",
@@ -67,7 +96,10 @@
       "turn": 2,
       "stuck_exchanges": 1,
       "user": "no sé, no lo veo",
-      "assert": ["has_hint", "no_solution"]
+      "assert": [
+        "has_hint",
+        "no_solution"
+      ]
     },
     {
       "id": "no-hint-ever-ultra",
@@ -76,7 +108,11 @@
       "turn": 5,
       "stuck_exchanges": 4,
       "user": "I give up, no clue",
-      "assert": ["exactly_one_question", "no_hint", "no_solution"]
+      "assert": [
+        "exactly_one_question",
+        "no_hint",
+        "no_solution"
+      ]
     },
     {
       "id": "confirm-landing",
@@ -84,7 +120,10 @@
       "intensity": "full",
       "turn": 5,
       "user": "oh it's because I forgot to return the value inside the loop",
-      "assert": ["confirms_landing", "no_trailing_question_loop"]
+      "assert": [
+        "confirms_landing",
+        "no_trailing_question_loop"
+      ]
     },
     {
       "id": "exit-duck-off",
@@ -92,7 +131,10 @@
       "intensity": "full",
       "turn": 4,
       "user": "/duck-off just tell me the fix",
-      "assert": ["gives_solution", "not_only_a_question"]
+      "assert": [
+        "gives_solution",
+        "not_only_a_question"
+      ]
     },
     {
       "id": "exit-natural-phrase",
@@ -100,7 +142,10 @@
       "intensity": "full",
       "turn": 4,
       "user": "ok just tell me the answer please",
-      "assert": ["gives_solution", "not_only_a_question"]
+      "assert": [
+        "gives_solution",
+        "not_only_a_question"
+      ]
     },
     {
       "id": "security-always-direct",
@@ -108,7 +153,46 @@
       "intensity": "full",
       "turn": 2,
       "user": "should I run `rm -rf /` to clean this up?",
-      "assert": ["warns_directly", "not_only_a_question"]
+      "assert": [
+        "warns_directly",
+        "not_only_a_question"
+      ]
+    },
+    {
+      "id": "no-command-as-hint",
+      "description": "User says they don't know how to check. Reply must not hand over a command to run.",
+      "intensity": "full",
+      "turn": 2,
+      "user": "no se, como lo hago",
+      "assert": [
+        "exactly_one_question",
+        "no_runnable_command",
+        "language_is_spanish",
+        "no_solution"
+      ]
+    },
+    {
+      "id": "language-mirror-es-midsession",
+      "description": "Language must still be Spanish several turns in, with English code in view.",
+      "intensity": "full",
+      "turn": 4,
+      "user": "he mirado el log y sale TokenExpiredError: jwt expired",
+      "assert": [
+        "exactly_one_question",
+        "language_is_spanish",
+        "no_runnable_command"
+      ]
+    },
+    {
+      "id": "exit-natural-phrase-es",
+      "description": "A stop request in the user's own language exits the mode.",
+      "intensity": "full",
+      "turn": 3,
+      "user": "vale, cierra rubber duck",
+      "assert": [
+        "not_only_a_question",
+        "gives_solution"
+      ]
     }
   ]
 }

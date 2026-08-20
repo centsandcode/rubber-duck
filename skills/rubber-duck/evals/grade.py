@@ -31,6 +31,7 @@ EVALS = Path(__file__).with_name("evals.json")
 DETERMINISTIC = {
     "exactly_one_question",
     "no_code_block",
+    "no_runnable_command",
     "not_only_a_question",
     "language_is_spanish",
     "no_trailing_question_loop",
@@ -62,6 +63,21 @@ def has_code_block(text: str) -> bool:
     return "```" in text
 
 
+_COMMAND = re.compile(
+    r"`[^`\n]*\b(node|npx|npm|yarn|pnpm|python3?|pip|git|curl|bash|sh|"
+    r"console\.log|print|echo)\b[^`\n]*`"
+)
+
+
+def has_runnable_command(text: str) -> bool:
+    """A fenced block, or inline code that is something to run.
+
+    Handing over `node -e "..."` is the answer as homework, so it counts as
+    code even without a fence.
+    """
+    return has_code_block(text) or bool(_COMMAND.search(text))
+
+
 def is_spanish(text: str) -> bool:
     return bool(_SPANISH_MARKERS.search(text))
 
@@ -74,6 +90,9 @@ def check(assertion: str, reply: str):
     if assertion == "no_code_block":
         bad = has_code_block(reply)
         return ("FAIL" if bad else "PASS", "code block present" if bad else "no code")
+    if assertion == "no_runnable_command":
+        bad = has_runnable_command(reply)
+        return ("FAIL" if bad else "PASS", "command present" if bad else "no command")
     if assertion == "not_only_a_question":
         # the reply must do more than ask — exit replies answer the user
         only_q = count_questions(reply) >= 1 and len(re.sub(r"[^?.!]", "", reply)) <= 1
@@ -127,6 +146,11 @@ def self_check() -> int:
     assert check("exactly_one_question", "What value is x there?") == ("PASS", "1 question(s)")
     assert check("exactly_one_question", "Is it x? Or y?")[0] == "FAIL"
     assert check("no_code_block", "```py\nx\n```")[0] == "FAIL"
+    assert has_runnable_command('try `node -e "console.log(1)"` now')
+    assert not has_runnable_command("What does `exp` hold on that token?")
+    assert not has_runnable_command("Which value does `EXPIRA_EN_MS` carry?")
+    assert check("no_runnable_command", "What does `exp` hold?") == ("PASS", "no command")
+    assert check("no_runnable_command", "run `npm test`")[0] == "FAIL"
     assert check("language_is_spanish", "What returns?")[0] == "FAIL"
     assert check("no_solution", "anything")[0] == "MANUAL"
     print("self-check OK")
