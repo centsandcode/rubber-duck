@@ -71,11 +71,14 @@ def get_reply(client, case: dict, arm: str) -> str:
         system += "\n\n" + context_note(case)
     resp = client.messages.create(
         model=MODEL,
-        max_tokens=1024,
+        max_tokens=4096,  # adaptive thinking eats budget; 1024 returned empty replies
         system=system or anthropic.NOT_GIVEN,
         messages=history + [{"role": "user", "content": case["user"]}],
     )
-    return "".join(b.text for b in resp.content if b.type == "text").strip()
+    text = "".join(b.text for b in resp.content if b.type == "text").strip()
+    # An empty reply scores 0 on every assertion and looks like a real failure.
+    # Make it say so instead of quietly poisoning the benchmark.
+    return text or f"<EMPTY REPLY: no text block, stop_reason={resp.stop_reason}>"
 
 
 JUDGE_SYS = (

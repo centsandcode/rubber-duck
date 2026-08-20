@@ -1,6 +1,6 @@
 {
   "description": "Behavioral evals for the rubber-duck skill. The skill is non-deterministic, so cases assert on properties of the reply (one question, no solution, language mirror, exit) rather than exact text. Run with grade.py.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "cases": [
     {
       "id": "activate-explicit",
@@ -227,7 +227,7 @@
       "description": "When the user states the correct cause, validate and stop questioning.",
       "intensity": "full",
       "turn": 5,
-      "user": "oh it's because I forgot to return the value inside the loop",
+      "user": "oh — I build the total in the loop but I never return it after the loop ends",
       "assert": [
         "confirms_landing",
         "no_trailing_question_loop"
@@ -263,7 +263,7 @@
         },
         {
           "role": "assistant",
-          "content": "Where is your return right now?"
+          "content": "Where is your return statement right now?"
         }
       ]
     },
