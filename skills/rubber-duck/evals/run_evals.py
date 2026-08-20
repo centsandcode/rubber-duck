@@ -32,6 +32,11 @@ from pathlib import Path
 
 import anthropic
 
+# ponytail: Windows pipes default to cp1252 and die on the duck emoji.
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        _s.reconfigure(encoding="utf-8", errors="replace")
+
 import grade  # deterministic checkers + case loader
 
 MODEL = "claude-opus-5"
