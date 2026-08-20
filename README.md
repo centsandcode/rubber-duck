@@ -66,8 +66,8 @@ Match the amount of scaffolding to your experience:
 | `/rubber-duck:duck full` | Default | Neutral standalone questions, hint after 3 |
 | `/rubber-duck:duck ultra` | Advanced | Terse questions, no hints ever |
 
-`duck` also starts the mode if it is not running, so you can go straight to the
-level you want.
+`duck` starts the mode too, so you can go straight to the level you want. It
+defers to the same spec the skill uses — it only picks the level.
 
 The duck replies in whatever language you write in.
 
