@@ -34,7 +34,7 @@ import anthropic
 
 import grade  # deterministic checkers + case loader
 
-MODEL = "claude-opus-4-8"
+MODEL = "claude-opus-5"
 SKILL = Path(__file__).resolve().parents[1] / "SKILL.md"
 EVALS = Path(__file__).with_name("evals.json")
 
