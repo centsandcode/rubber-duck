@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "rubber-duck",
+  "description": "Socratic debugging for AI agents. Don't give me the answer. Help me find it.",
+  "owner": {
+    "name": "centsandcode",
+    "url": "https://github.com/centsandcode"
+  },
+  "plugins": [
+    {
+      "name": "rubber-duck",
+      "description": "Asks one question at a time until you reach the answer yourself. Manual activation via /rubber-duck.",
+      "source": "./",
+      "category": "education"
+    }
+  ]
+}

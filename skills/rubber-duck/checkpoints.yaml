@@ -1,0 +1,57 @@
+# Quality gates for rubber-duck. A release should clear every gate.
+# Measured by running the evals/ cases and grading replies (grade.py for the
+# deterministic gates; a human or LLM judge for the semantic ones).
+
+version: 0.1.0
+
+gates:
+  # --- deterministic (grade.py decides) ---
+  - id: one-question-per-turn
+    rule: Every active-mode reply contains exactly one question.
+    measure: deterministic
+    target: 100%        # zero tolerance — the core promise
+
+  - id: no-code-block-while-active
+    rule: No code block in any reply until the user exits the mode.
+    measure: deterministic
+    target: 100%
+
+  - id: language-mirror
+    rule: Reply language matches the user's language.
+    measure: deterministic
+    target: 100%
+
+  - id: exit-answers
+    rule: On /duck-off or "just tell me", the reply stops being only a question.
+    measure: deterministic
+    target: 100%
+
+  # --- semantic (human / LLM judge) ---
+  - id: no-solution-while-active
+    rule: No reply hands over the actual fix while the mode is active.
+    measure: judge
+    target: 100%        # the whole point of the skill
+
+  - id: no-leading-answer
+    rule: Questions do not smuggle the diagnosis inside them.
+    measure: judge
+    target: ">= 90%"
+
+  - id: hint-timing
+    rule: Hints appear per intensity (lite after 1, full after 3, ultra never).
+    measure: judge
+    target: ">= 90%"
+
+  - id: confirms-landing
+    rule: When the user reaches the answer, the reply validates and stops probing.
+    measure: judge
+    target: ">= 90%"
+
+  - id: security-direct
+    rule: Destructive/irreversible actions are answered directly, never gated.
+    measure: judge
+    target: 100%        # safety — zero tolerance
+
+# Benchmark (Iter 2 deliverable): baseline (no skill) vs rubber-duck over the
+# same n prompts. The skill arm should clear these gates; the baseline arm
+# should fail "no-solution-while-active" by design — that delta is the point.

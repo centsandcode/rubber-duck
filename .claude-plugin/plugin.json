@@ -1,0 +1,14 @@
+{
+  "name": "rubber-duck",
+  "version": "0.1.0",
+  "description": "Socratic debugging companion. Instead of giving the answer, asks one question at a time until you find it yourself.",
+  "author": {
+    "name": "centsandcode",
+    "url": "https://github.com/centsandcode"
+  },
+  "homepage": "https://github.com/centsandcode/rubber-duck",
+  "repository": "https://github.com/centsandcode/rubber-duck",
+  "license": "MIT",
+  "keywords": ["socratic", "debugging", "learning", "rubber-duck", "education"],
+  "skills": "./skills/"
+}

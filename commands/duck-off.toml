@@ -1,0 +1,2 @@
+description = "Turn off Rubber Duck mode and answer normally"
+prompt = "Turn OFF Rubber Duck mode. Stop the Socratic questioning. Answer the user's questions normally and directly from now on, including giving the full solution and code. If the user was mid-problem, give them the answer they were working toward."
