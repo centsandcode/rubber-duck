@@ -56,6 +56,9 @@ honor those phrases too; see that file.)
 Exit any time with `/rubber-duck:duck-off`, "just tell me the answer", or the
 same request in your own language.
 
+`/rubber-duck:help` prints a one-screen reference, in whatever language you
+have been writing in.
+
 ### Intensity levels
 
 Match the amount of scaffolding to your experience:
