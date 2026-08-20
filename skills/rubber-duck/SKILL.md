@@ -150,7 +150,11 @@ Example — same stuck user, "my function returns undefined":
   single cause. "It usually means you forgot a `return`" would be the answer
   wearing a cardigan.)
 - **full:** "What does the last line of your function return?"
-- **ultra:** "Where's the `return`?"
+- **ultra:** "What's the last thing that function does?"
+
+Note what `ultra` does *not* say: "Where's the `return`?" is terse, but it has
+already decided the answer is a missing `return` and handed that over. Terse is
+about word count, not about skipping ahead.
 
 ## Confirming the landing
 

@@ -2,8 +2,9 @@
 """Run the rubber-duck evals against the live model and score every case.
 
 For each case in evals.json:
-  1. build a prompt (SKILL.md as system + the case's user turn)
-  2. call Claude to get the duck's reply
+  1. replay the case's prior transcript, then its user turn
+  2. call Claude to get the duck's reply (skill arm: SKILL.md as the system
+     prompt; control arm: no system prompt)
   3. grade deterministic assertions in code (reuses grade.py)
   4. grade semantic assertions with an LLM judge (one call per case)
 
@@ -20,9 +21,13 @@ Usage:
   python run_evals.py --baseline    # control arm
   python run_evals.py --case hint-after-3-full   # one case
 
-Needs: pip install anthropic. ponytail: multi-turn state (turn/stuck_exchanges)
-is approximated with a synthetic context note, not a real prior transcript —
-good enough to probe hint timing; replay real transcripts if a case proves flaky.
+Needs: pip install anthropic.
+
+Every case past turn 1 carries a `history` of real prior turns, replayed to
+both arms. That matters: with only a synthetic "you are at turn 4" note and no
+stated problem, assertions like gives_solution and confirms_landing are
+unpassable for either arm, and the control answers "I have no context" instead
+of handing over a fix — which flatters the skill by understating the gap.
 """
 
 import argparse
@@ -32,12 +37,13 @@ from pathlib import Path
 
 import anthropic
 
-# ponytail: Windows pipes default to cp1252 and die on the duck emoji.
-for _s in (sys.stdout, sys.stderr):
-    if hasattr(_s, "reconfigure"):
-        _s.reconfigure(encoding="utf-8", errors="replace")
-
 import grade  # deterministic checkers + case loader
+
+# Redirecting this report to a file on Windows encodes it as cp1252, which
+# cannot represent the duck emoji the replies tend to open with.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
 
 MODEL = "claude-opus-5"
 SKILL = Path(__file__).resolve().parents[1] / "SKILL.md"
@@ -52,28 +58,13 @@ def skill_system() -> str:
     return text.strip()
 
 
-def context_note(case: dict) -> str:
-    """Synthetic prior-state note so single-shot calls can probe turn/hint timing."""
-    bits = [f"(You are at turn {case['turn']} of an active rubber-duck session"]
-    if "stuck_exchanges" in case:
-        bits.append(f", and the user has been stuck for {case['stuck_exchanges']} exchanges")
-    bits.append(f". Current intensity: {case['intensity']}.)")
-    return "".join(bits)
-
-
 def get_reply(client, case: dict, arm: str) -> str:
-    system = skill_system() if arm == "skill" else ""
-    history = case.get("history", [])
-    # Both arms replay the same transcript. Without a stated problem, "give the
-    # solution" and "confirm the landing" are unpassable for either arm, and the
-    # control ends up answering "I have no context" instead of handing over a fix.
-    if arm == "skill" and case["turn"] > 1 and not history:
-        system += "\n\n" + context_note(case)
+    """One reply for one case. Both arms replay the same conversation."""
     resp = client.messages.create(
         model=MODEL,
         max_tokens=4096,  # adaptive thinking eats budget; 1024 returned empty replies
-        system=system or anthropic.NOT_GIVEN,
-        messages=history + [{"role": "user", "content": case["user"]}],
+        system=skill_system() if arm == "skill" else anthropic.NOT_GIVEN,
+        messages=case.get("history", []) + [{"role": "user", "content": case["user"]}],
     )
     text = "".join(b.text for b in resp.content if b.type == "text").strip()
     # An empty reply scores 0 on every assertion and looks like a real failure.
@@ -113,6 +104,16 @@ def run(arm: str, only: str | None) -> int:
     cases = [c for c in data["cases"] if only is None or c["id"] == only]
     if not cases:
         raise SystemExit(f"no case '{only}'")
+    for case in cases:
+        # A case past turn 1 without its transcript silently breaks the
+        # benchmark rather than failing loudly, so refuse to run one.
+        expected = 2 * (case["turn"] - 1)
+        actual = len(case.get("history", []))
+        if actual != expected:
+            raise SystemExit(
+                f"case '{case['id']}' is at turn {case['turn']} and needs "
+                f"{expected} history entries, has {actual}"
+            )
 
     total = passed = 0
     print(f"# arm: {arm}  model: {MODEL}  cases: {len(cases)}\n")
@@ -121,7 +122,8 @@ def run(arm: str, only: str | None) -> int:
         sem = [a for a in case["assert"] if a in grade.SEMANTIC]
         verdicts = judge(client, reply, sem) if sem else {}
         print(f"## {case['id']} ({case['intensity']}, turn {case['turn']})")
-        print(f"   reply: {reply[:100]!r}")
+        for line in reply.splitlines() or [""]:
+            print(f"   | {line}")
         for a in case["assert"]:
             if a in grade.SEMANTIC:
                 ok = bool(verdicts.get(a))

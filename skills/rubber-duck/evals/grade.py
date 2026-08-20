@@ -16,8 +16,9 @@ Usage:
   # run the built-in self-check (no input needed)
   python grade.py --self-check
 
-No dependencies. ponytail: language detect is a naive marker heuristic; swap
-for a real detector (langid/fasttext) only if it misjudges in practice.
+No dependencies. Language detection is a marker heuristic rather than a real
+detector: enough to separate the Spanish cases here, and worth replacing if you
+add languages it cannot tell apart.
 """
 
 import json
@@ -27,16 +28,8 @@ from pathlib import Path
 
 EVALS = Path(__file__).with_name("evals.json")
 
-# Assertions we can decide from the reply text alone.
-DETERMINISTIC = {
-    "exactly_one_question",
-    "no_code_block",
-    "no_runnable_command",
-    "not_only_a_question",
-    "language_is_spanish",
-    "no_trailing_question_loop",
-}
-# Assertions that need a human or LLM judge.
+# Assertions that need a human or an LLM judge. Every other assertion is
+# decided from the reply text by check() below.
 SEMANTIC = {
     "no_solution": "Does the reply withhold the actual fix?",
     "gives_solution": "Does the reply contain the actual fix?",
@@ -52,6 +45,11 @@ _SPANISH_MARKERS = re.compile(
     re.IGNORECASE,
 )
 
+_COMMAND = re.compile(
+    r"`[^`\n]*\b(node|npx|npm|yarn|pnpm|python3?|pip|git|curl|bash|sh|"
+    r"console\.log|print|echo)\b[^`\n]*`"
+)
+
 
 def count_questions(text: str) -> int:
     """Number of question sentences. '?' clusters collapse to one."""
@@ -61,12 +59,6 @@ def count_questions(text: str) -> int:
 
 def has_code_block(text: str) -> bool:
     return "```" in text
-
-
-_COMMAND = re.compile(
-    r"`[^`\n]*\b(node|npx|npm|yarn|pnpm|python3?|pip|git|curl|bash|sh|"
-    r"console\.log|print|echo)\b[^`\n]*`"
-)
 
 
 def has_runnable_command(text: str) -> bool:

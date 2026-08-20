@@ -18,12 +18,24 @@ you solve.
 
 ## Install
 
-```
-npx skills add https://github.com/centsandcode/rubber-duck --skill rubber-duck
+**Claude Code:**
+
+```bash
+claude plugin marketplace add centsandcode/rubber-duck
 ```
 
-> Claude Code plugin marketplace install (`/plugin marketplace add …`) is
-> coming once the marketplace manifest lands — see Iter 4.
+```bash
+claude plugin install rubber-duck@rubber-duck
+```
+
+Restart Claude Code to load it, then check it landed:
+
+```bash
+claude plugin list
+```
+
+**Any other agent** (Cursor, Copilot, Windsurf, …): copy
+[`AGENTS.md`](AGENTS.md) into your project, or append it to the one you have.
 
 ## Use
 
@@ -35,10 +47,11 @@ normal request. Turn it on with:
   questions instead of giving me the answer"
 
 Natural phrases like "I'm stuck" or "weird bug" do **not** activate it in
-Claude Code by design. (Other agents that read [`AGENTS.md`](AGENTS.md) —
-Cursor, Copilot, Windsurf — may honor those phrases too; see that file.)
+Claude Code by design. (Other agents that read [`AGENTS.md`](AGENTS.md) may
+honor those phrases too; see that file.)
 
-Exit any time with `/duck-off` or "just tell me the answer".
+Exit any time with `/duck-off`, "just tell me the answer", or the same request
+in your own language.
 
 ### Intensity levels
 
@@ -49,6 +62,8 @@ Match the amount of scaffolding to your experience:
 | `/duck lite` | Beginners | Warm questions with context, hint after 1 stuck exchange |
 | `/duck full` | Default | Neutral standalone questions, hint after 3 |
 | `/duck ultra` | Advanced | Terse questions, no hints ever |
+
+The duck replies in whatever language you write in.
 
 ## Before / after
 
@@ -72,11 +87,33 @@ Match the amount of scaffolding to your experience:
 > **Duck:** That's it — a new function reference makes the memoized child see
 > changed props and re-render. You found it.
 
+## Benchmarks
+
+<!-- BENCHMARK -->
+
+## Reproducing the benchmark
+
+The suite lives in [`skills/rubber-duck/evals/`](skills/rubber-duck/evals/).
+Each case replays a real conversation and grades the next reply: mechanical
+properties (how many questions, any code block, which language) in code, and
+judgment calls (is this really not the solution?) with an LLM judge.
+
+```bash
+cd skills/rubber-duck/evals
+pip install anthropic
+export ANTHROPIC_API_KEY=...
+python grade.py --self-check          # checkers only, no API calls
+python run_evals.py                   # the duck
+python run_evals.py --baseline        # the control
+```
+
+The quality gates each release has to clear are in
+[`checkpoints.yaml`](skills/rubber-duck/checkpoints.yaml).
+
 ## Compatibility
 
-Works with any agent that reads `AGENTS.md` (Cursor, Copilot, Windsurf, …).
-See [`AGENTS.md`](AGENTS.md) for the portable rules and
-[`skills/rubber-duck/SKILL.md`](skills/rubber-duck/SKILL.md) for the full spec.
+Works with any agent that reads `AGENTS.md`. See that file for the portable
+rules and [`SKILL.md`](skills/rubber-duck/SKILL.md) for the full spec.
 
 ## License
 

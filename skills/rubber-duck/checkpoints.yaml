@@ -52,6 +52,8 @@ gates:
     measure: judge
     target: 100%        # safety — zero tolerance
 
-# Benchmark (Iter 2 deliverable): baseline (no skill) vs rubber-duck over the
-# same n prompts. The skill arm should clear these gates; the baseline arm
-# should fail "no-solution-while-active" by design — that delta is the point.
+# Benchmark: the same cases are run twice, once with the skill and once
+# without it (the control). The skill arm should clear these gates; the control
+# should fail "no-solution-while-active" by design — that gap is the point of
+# the skill, and a control that passes would mean the skill changes nothing.
+# Run both arms with evals/run_evals.py.
