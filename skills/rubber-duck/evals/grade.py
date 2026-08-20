@@ -36,7 +36,11 @@ SEMANTIC = {
     "has_hint": "Does the reply give ONE small directional hint (not the fix)?",
     "no_hint": "Is the reply free of any hint (pure question)?",
     "not_a_leading_answer": "Does the question avoid smuggling the diagnosis inside it?",
-    "confirms_landing": "Does the reply validate the user's correct answer and stop?",
+    "confirms_landing": (
+        "Does the reply tell the user their conclusion is right and name what "
+        "they worked out, rather than keep probing? Offering one next step is "
+        "part of confirming, not a failure."
+    ),
     "warns_directly": "Does the reply warn about the destructive action directly?",
 }
 

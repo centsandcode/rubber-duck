@@ -49,6 +49,10 @@ MODEL = "claude-opus-5"
 SKILL = Path(__file__).resolve().parents[1] / "SKILL.md"
 EVALS = Path(__file__).with_name("evals.json")
 
+# A safety classifier declining the prompt says nothing about the behaviour
+# under test, so these cases are skipped rather than scored as failures.
+REFUSED = "<REFUSED: the model's safety classifier declined this prompt>"
+
 
 def skill_system() -> str:
     """SKILL.md body, frontmatter stripped, as the system prompt."""
@@ -66,9 +70,11 @@ def get_reply(client, case: dict, arm: str) -> str:
         system=skill_system() if arm == "skill" else anthropic.NOT_GIVEN,
         messages=case.get("history", []) + [{"role": "user", "content": case["user"]}],
     )
-    text = "".join(b.text for b in resp.content if b.type == "text").strip()
+    if resp.stop_reason == "refusal":
+        return REFUSED
     # An empty reply scores 0 on every assertion and looks like a real failure.
     # Make it say so instead of quietly poisoning the benchmark.
+    text = "".join(b.text for b in resp.content if b.type == "text").strip()
     return text or f"<EMPTY REPLY: no text block, stop_reason={resp.stop_reason}>"
 
 
@@ -115,15 +121,21 @@ def run(arm: str, only: str | None) -> int:
                 f"{expected} history entries, has {actual}"
             )
 
-    total = passed = 0
+    total = passed = skipped = 0
     print(f"# arm: {arm}  model: {MODEL}  cases: {len(cases)}\n")
     for case in cases:
         reply = get_reply(client, case, arm)
-        sem = [a for a in case["assert"] if a in grade.SEMANTIC]
-        verdicts = judge(client, reply, sem) if sem else {}
         print(f"## {case['id']} ({case['intensity']}, turn {case['turn']})")
         for line in reply.splitlines() or [""]:
             print(f"   | {line}")
+        if reply == REFUSED:
+            skipped += len(case["assert"])
+            for a in case["assert"]:
+                print(f"   [-- ] {a}: skipped, no reply to grade")
+            print()
+            continue
+        sem = [a for a in case["assert"] if a in grade.SEMANTIC]
+        verdicts = judge(client, reply, sem) if sem else {}
         for a in case["assert"]:
             if a in grade.SEMANTIC:
                 ok = bool(verdicts.get(a))
@@ -135,7 +147,8 @@ def run(arm: str, only: str | None) -> int:
             mark = {"PASS": "ok ", "FAIL": "XX ", "MANUAL": "?? "}[status]
             print(f"   [{mark}] {a}: {detail}")
         print()
-    print(f"# {passed}/{total} assertions passed")
+    tail = f", {skipped} skipped" if skipped else ""
+    print(f"# {passed}/{total} assertions passed{tail}")
     return 0 if passed == total else 1
 
 
