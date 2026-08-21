@@ -347,10 +347,14 @@
   .plot { display: grid; grid-template-columns: 1fr 2.7rem 2.7rem; align-items: center; column-gap: 0.5rem; }
   @media (min-width: 46rem) { .plot { grid-template-columns: 1fr 3.6rem 3.6rem; column-gap: 0.9rem; } }
 
-  .track { position: relative; height: 20px; }
+  /* The scale is inset from the track, so a mark at 0 or 100 has room to
+     breathe instead of hanging off the end of its own rule. Ticks are inset by
+     the same amount or they stop describing where the marks are. */
+  .track { position: relative; height: 20px; --dot-pad: 9px; }
   .track::before {
     content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line);
   }
+  .scale { position: absolute; top: 0; bottom: 0; left: var(--dot-pad); right: var(--dot-pad); }
   .connector {
     position: absolute; top: 50%; height: 2px; margin-top: -1px; border-radius: 2px;
     background: linear-gradient(to right, var(--control), var(--accent));
@@ -390,7 +394,7 @@
   }
   /* Ticks are centred on their value, not packed to the ends — otherwise the
      100% label sits left of the 100% mark and the scale reads as skewed. */
-  .axis .ticks { position: relative; height: 1em; }
+  .axis .ticks { position: relative; height: 1em; margin-inline: 9px; }
   .axis .ticks span { position: absolute; top: 0; transform: translateX(-50%); }
 
   .totals {
@@ -696,11 +700,11 @@
     row.innerHTML =
       '<div class="row-label">' + gate + '</div>' +
       '<div class="plot">' +
-        '<div class="track">' +
+        '<div class="track"><div class="scale">' +
           (hi > lo ? '<span class="connector" style="left:' + lo + '%;width:' + (hi - lo) + '%"></span>' : '') +
           '<span class="pt pt-control" style="left:' + control + '%"></span>' +
           '<span class="pt pt-skill" style="left:' + skill + '%"></span>' +
-        '</div>' +
+        '</div></div>' +
         '<span class="v v-control">' + control + '%</span>' +
         '<span class="v v-skill">' + skill + '%</span>' +
       '</div>';
