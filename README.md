@@ -70,7 +70,8 @@ Match the amount of scaffolding to your experience:
 | `/rubber-duck:rubber-duck ultra` | Advanced | Terse questions, no hints ever |
 
 Or just say it mid-conversation — "go ultra", "modo lite" — the level holds
-until you change it again.
+until you change it again. Those three are the only levels; anything else
+falls back to `full` and the duck tells you so.
 
 The duck replies in whatever language you write in.
 
