@@ -254,6 +254,14 @@
   @keyframes rise { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .reveal { animation: none; opacity: 1; transform: none; } }
 
+  /* Scroll reveal. The class is added by script, so with JS off or motion
+     reduced nothing is ever hidden. */
+  .pre-rise {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 0.7, 0.3, 1);
+  }
+  .pre-rise.in { opacity: 1; transform: none; }
+
   /* ── Sections, strung on a rail ───────────────────────── */
 
   .chain { position: relative; padding-bottom: 4rem; }
@@ -378,7 +386,10 @@
   @media (min-width: 46rem) {
     .axis { grid-template-columns: 1fr 3.6rem 3.6rem; column-gap: 0.9rem; margin-left: 18.75rem; }
   }
-  .axis .ticks { display: flex; justify-content: space-between; }
+  /* Ticks are centred on their value, not packed to the ends — otherwise the
+     100% label sits left of the 100% mark and the scale reads as skewed. */
+  .axis .ticks { position: relative; height: 1em; }
+  .axis .ticks span { position: absolute; top: 0; transform: translateX(-50%); }
 
   .totals {
     display: flex; flex-wrap: wrap; gap: 0.75rem 2rem;
@@ -574,7 +585,11 @@
         <div class="rows" id="rows"></div>
 
         <div class="axis">
-          <span class="ticks"><span>0%</span><span>50%</span><span>100%</span></span>
+          <span class="ticks">
+            <span style="left:0">0%</span>
+            <span style="left:50%">50%</span>
+            <span style="left:100%">100%</span>
+          </span>
           <span></span><span></span>
         </div>
 
@@ -688,6 +703,76 @@
         '<span class="v v-skill">' + skill + '%</span>' +
       '</div>';
     rows.appendChild(row);
+  }
+
+  // Reveal on scroll. Items inside a group stagger, so a row of cards arrives
+  // as a sequence rather than a block. Set up after the chart exists so its
+  // rows are included.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const groups = [
+      ["section.q", ".eyebrow, h2, p, details"],
+      [".rows", ".row"],
+      [".split", ".panel"],
+      [".levels", ".level"],
+      [".cmds", ".cmd"],
+      ["dl.verbs", "dt, dd"],
+      [".figure", ".axis, .totals"],
+    ];
+
+    const seen = new Set();
+    for (const [container, child] of groups) {
+      for (const box of document.querySelectorAll(container)) {
+        [...box.querySelectorAll(child)].forEach((el, i) => {
+          if (seen.has(el)) return;
+          seen.add(el);
+          el.classList.add("pre-rise");
+          el.style.transitionDelay = Math.min(i * 45, 320) + "ms";
+        });
+      }
+    }
+
+    // Hiding content until something fires means a failure shows a blank page,
+    // so three independent things can reveal it: a scroll sweep, an observer,
+    // and a timer. Any one of them is enough.
+    const pending = new Set(seen);
+    let queued = false;
+
+    function reveal(el) {
+      el.classList.add("in");
+      pending.delete(el);
+    }
+
+    function sweep() {
+      queued = false;
+      const limit = window.innerHeight * 0.94;
+      for (const el of pending) {
+        if (el.getBoundingClientRect().top < limit) reveal(el);
+      }
+    }
+
+    function onScroll() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sweep);
+    }
+
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    // Capture phase, so a scrolling container rather than the window still counts.
+    document.addEventListener("scroll", onScroll, { passive: true, capture: true });
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+      }, { rootMargin: "0px 0px -6% 0px", threshold: 0.08 });
+      seen.forEach((el) => io.observe(el));
+    }
+
+    // Last resort: whatever is still hidden after a few seconds is off-screen
+    // anyway, so showing it costs nothing and guarantees nothing is lost.
+    setTimeout(() => pending.forEach(reveal), 5000);
+
+    sweep();
   }
 
   // The duck only ever asks. Poking it returns a question, never an answer.
