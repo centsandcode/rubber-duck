@@ -29,12 +29,12 @@ THEMES = {
                   skill="#4691d6", control="#c2775a", ring="#0d1117"),
 }
 
-W, ROW_H, TOP = 900, 34, 52
-LABEL_R = 300           # label column ends here
-TRACK_L, TRACK_R = 320, 700
+W, ROW_H, TOP = 860, 40, 58
+LABEL_R = 320           # label column ends here
+TRACK_L, TRACK_R = 340, 680
 PAD = 9                 # the marks' breathing room, same as the site
-V_CONTROL, V_SKILL = 780, 862
-H = TOP + len(GATES) * ROW_H + 46
+V_CONTROL, V_SKILL = 762, 848
+H = TOP + len(GATES) * ROW_H + 52
 
 SANS = "ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace"
@@ -53,17 +53,17 @@ def svg(theme):
          'role="img" aria-label="%s">' % (W, H, W, H, esc(alt))]
 
     # column headers double as the legend
-    p.append('<g font-family="%s" font-size="11" letter-spacing="0.9">' % MONO)
-    p.append('<circle cx="%d" cy="26" r="4.5" fill="%s"/>' % (V_CONTROL - 56, c["control"]))
-    p.append('<text x="%d" y="30" fill="%s" text-anchor="end">CONTROL</text>' % (V_CONTROL, c["muted"]))
-    p.append('<circle cx="%d" cy="26" r="4.5" fill="%s"/>' % (V_SKILL - 40, c["skill"]))
-    p.append('<text x="%d" y="30" fill="%s" text-anchor="end">SKILL</text>' % (V_SKILL, c["muted"]))
+    p.append('<g font-family="%s" font-size="12" letter-spacing="0.9">' % MONO)
+    p.append('<circle cx="%d" cy="28" r="5" fill="%s"/>' % (V_CONTROL - 62, c["control"]))
+    p.append('<text x="%d" y="32" fill="%s" text-anchor="end">CONTROL</text>' % (V_CONTROL, c["muted"]))
+    p.append('<circle cx="%d" cy="28" r="5" fill="%s"/>' % (V_SKILL - 44, c["skill"]))
+    p.append('<text x="%d" y="32" fill="%s" text-anchor="end">SKILL</text>' % (V_SKILL, c["muted"]))
     p.append('</g>')
 
     for i, (gate, skill, control) in enumerate(GATES):
         y = TOP + i * ROW_H + ROW_H / 2
         xs, xc = x_of(skill), x_of(control)
-        p.append('<text x="%d" y="%.1f" fill="%s" font-family="%s" font-size="13.5" '
+        p.append('<text x="%d" y="%.1f" fill="%s" font-family="%s" font-size="15" '
                  'text-anchor="end" dominant-baseline="middle">%s</text>'
                  % (LABEL_R, y, c["ink"], SANS, esc(gate)))
         p.append('<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s" stroke-width="1"/>'
@@ -72,11 +72,11 @@ def svg(theme):
             lo, hi = sorted((xs, xc))
             p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="url(#grad)" stroke-width="2"/>'
                      % (lo, y, hi, y))
-        p.append('<circle cx="%.1f" cy="%.1f" r="5.5" fill="%s" stroke="%s" stroke-width="2"/>'
+        p.append('<circle cx="%.1f" cy="%.1f" r="6" fill="%s" stroke="%s" stroke-width="2"/>'
                  % (xc, y, c["control"], c["ring"]))
-        p.append('<circle cx="%.1f" cy="%.1f" r="5.5" fill="%s" stroke="%s" stroke-width="2"/>'
+        p.append('<circle cx="%.1f" cy="%.1f" r="6" fill="%s" stroke="%s" stroke-width="2"/>'
                  % (xs, y, c["skill"], c["ring"]))
-        p.append('<g font-family="%s" font-size="12.5" dominant-baseline="middle">' % MONO)
+        p.append('<g font-family="%s" font-size="14" dominant-baseline="middle">' % MONO)
         p.append('<text x="%d" y="%.1f" fill="%s" text-anchor="end">%d%%</text>' % (V_CONTROL, y, c["control"], control))
         p.append('<text x="%d" y="%.1f" fill="%s" text-anchor="end">%d%%</text>' % (V_SKILL, y, c["skill"], skill))
         p.append('</g>')
@@ -85,13 +85,13 @@ def svg(theme):
     ay = TOP + len(GATES) * ROW_H + 6
     p.append('<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s" stroke-width="1"/>'
              % (TRACK_L, ay, V_SKILL, ay, c["line"]))
-    p.append('<g font-family="%s" font-size="11" fill="%s" text-anchor="middle">' % (MONO, c["muted"]))
+    p.append('<g font-family="%s" font-size="12" fill="%s" text-anchor="middle">' % (MONO, c["muted"]))
     for pct in (0, 50, 100):
         p.append('<text x="%.1f" y="%.1f">%d%%</text>' % (x_of(pct), ay + 18, pct))
     p.append('</g>')
     # Under the label column, not on the tick row: right-aligned at V_SKILL it
     # sat on top of the 100% tick.
-    p.append('<text x="%d" y="%.1f" fill="%s" font-family="%s" font-size="12.5" text-anchor="end">'
+    p.append('<text x="%d" y="%.1f" fill="%s" font-family="%s" font-size="13.5" text-anchor="end">'
              '44/44 vs 24/43 gradeable assertions</text>' % (LABEL_R, ay + 18, c["muted"], SANS))
 
     p.append('<defs><linearGradient id="grad" x1="0" x2="1">'
