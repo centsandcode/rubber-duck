@@ -167,6 +167,12 @@ python run_evals.py --baseline        # the control
 The quality gates each release has to clear are in
 [`checkpoints.yaml`](skills/rubber-duck/checkpoints.yaml).
 
+## Site
+
+[centsandcode.github.io/rubber-duck](https://centsandcode.github.io/rubber-duck/) — the
+same thing with the benchmark laid out properly. Built from `docs/index.html`,
+one self-contained file, no build step.
+
 ## Compatibility
 
 Works with any agent that reads `AGENTS.md`. See that file for the portable

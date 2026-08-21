@@ -1,0 +1,566 @@
+<title>Rubber Duck</title>
+<meta name="description" content="A Claude Code plugin that asks questions until you reach the answer yourself.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Dark is the primary world here; light is the considered second. */
+  :root {
+    --ground:      #14120e;
+    --surface:     #1c1913;
+    --surface-2:   #24201a;
+    --line:        #322c22;
+    --ink:         #ede6d6;
+    --ink-muted:   #a2977f;
+    --ink-faint:   #6f6754;
+    --accent:      #e8b33c;
+    --accent-deep: #a87d16;
+    --accent-wash: rgba(232, 179, 60, 0.10);
+    --control:     #c07a5c;
+    --control-wash: rgba(192, 122, 92, 0.12);
+    --shadow:      0 1px 0 rgba(255,255,255,0.03), 0 18px 40px -28px rgba(0,0,0,0.9);
+
+    --measure: 66ch;
+    --step--1: clamp(0.82rem, 0.79rem + 0.14vw, 0.9rem);
+    --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
+    --step-1:  clamp(1.24rem, 1.15rem + 0.42vw, 1.5rem);
+    --step-2:  clamp(1.6rem, 1.4rem + 1vw, 2.2rem);
+    --step-3:  clamp(2.1rem, 1.6rem + 2.4vw, 3.6rem);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --ground:      #f7f3e8;
+      --surface:     #fffdf7;
+      --surface-2:   #f1ebda;
+      --line:        #e0d7c0;
+      --ink:         #23201a;
+      --ink-muted:   #6b6353;
+      --ink-faint:   #948b76;
+      --accent:      #9a7212;
+      --accent-deep: #6d5008;
+      --accent-wash: rgba(154, 114, 18, 0.10);
+      --control:     #a2543a;
+      --control-wash: rgba(162, 84, 58, 0.10);
+      --shadow:      0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -30px rgba(60,45,15,0.4);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #f7f3e8;
+    --surface:     #fffdf7;
+    --surface-2:   #f1ebda;
+    --line:        #e0d7c0;
+    --ink:         #23201a;
+    --ink-muted:   #6b6353;
+    --ink-faint:   #948b76;
+    --accent:      #9a7212;
+    --accent-deep: #6d5008;
+    --accent-wash: rgba(154, 114, 18, 0.10);
+    --control:     #a2543a;
+    --control-wash: rgba(162, 84, 58, 0.10);
+    --shadow:      0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -30px rgba(60,45,15,0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: Fraunces, "Iowan Old Style", Georgia, serif;
+    font-weight: 600;
+    line-height: 1.08;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  code, kbd, pre { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; }
+  code { font-size: 0.92em; }
+
+  .shell { width: min(100% - 2.5rem, 78rem); margin-inline: auto; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+
+  .hero { padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 6vw, 4.5rem); }
+
+  .hero-grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 62rem) {
+    .hero-grid { grid-template-columns: 1.05fr 1fr; }
+  }
+
+  .hero-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; }
+
+  .wordmark {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+  }
+  .wordmark b { color: var(--ink); font-weight: 500; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+  h1 { font-size: var(--step-3); letter-spacing: -0.02em; max-width: 15ch; }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .lede { font-size: var(--step-1); color: var(--ink-muted); max-width: 38ch; margin: 0; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.05rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: var(--step--1);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--ink); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #14120e; }
+  .btn-primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
+
+  /* ── Transcript ───────────────────────────────────────── */
+
+  .transcript {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .transcript-bar {
+    display: flex; align-items: center; gap: 0.55rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .transcript-body { display: flex; flex-direction: column; gap: 1.05rem; padding: 1.4rem 1.25rem; }
+
+  .turn { display: grid; grid-template-columns: 4.2rem 1fr; gap: 0.9rem; align-items: baseline; }
+  .who {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .turn.duck .who { color: var(--accent); }
+  .said { margin: 0; font-size: 0.97rem; line-height: 1.55; }
+  .turn.duck .said { color: var(--ink); }
+  .turn.you .said { color: var(--ink-muted); }
+
+  .reveal { opacity: 0; transform: translateY(6px); animation: rise 0.5s ease forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; transform: none; }
+  }
+
+  /* ── Sections, strung on a rail ───────────────────────── */
+
+  .chain { position: relative; padding-bottom: 4rem; }
+  @media (min-width: 62rem) {
+    .chain::before {
+      content: "";
+      position: absolute;
+      left: 0.5rem; top: 0; bottom: 4rem;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
+    }
+  }
+
+  section.q { padding: clamp(2.75rem, 6vw, 4.5rem) 0; position: relative; }
+  @media (min-width: 62rem) { section.q { padding-left: 3.25rem; } }
+
+  section.q::after {
+    content: "";
+    position: absolute; left: 0.5rem; top: clamp(3.4rem, 6.6vw, 5.2rem);
+    width: 9px; height: 9px; margin-left: -4px;
+    border-radius: 50%;
+    background: var(--ground);
+    border: 1px solid var(--accent);
+    display: none;
+  }
+  @media (min-width: 62rem) { section.q::after { display: block; } }
+
+  section.q h2 { font-size: var(--step-2); letter-spacing: -0.015em; max-width: 22ch; margin-top: 0.5rem; }
+  section.q > p { max-width: var(--measure); color: var(--ink-muted); }
+  section.q > p strong { color: var(--ink); font-weight: 500; }
+
+  /* ── Split ────────────────────────────────────────────── */
+
+  .split { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 2rem; }
+  @media (min-width: 48rem) { .split { grid-template-columns: 1fr 1fr; } }
+
+  .panel {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    padding: 1.35rem;
+    display: flex; flex-direction: column; gap: 0.85rem;
+  }
+  .panel-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    align-self: start;
+    padding: 0.2rem 0.6rem; border-radius: 999px;
+  }
+  .tag-control { color: var(--control); background: var(--control-wash); }
+  .tag-duck { color: var(--accent); background: var(--accent-wash); }
+  .panel p { margin: 0; font-size: 0.95rem; line-height: 1.55; }
+  .panel .you { color: var(--ink-faint); }
+
+  /* ── Levels ───────────────────────────────────────────── */
+
+  .levels { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 2rem; }
+  @media (min-width: 52rem) { .levels { grid-template-columns: repeat(3, 1fr); } }
+
+  .level { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 1.3rem; }
+  .level h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em;
+    color: var(--accent);
+    margin-bottom: 0.15rem;
+  }
+  .level .for { font-size: var(--step--1); color: var(--ink-faint); margin: 0 0 0.7rem; }
+  .level p.what { margin: 0; font-size: 0.93rem; color: var(--ink-muted); line-height: 1.55; }
+  .level .quote {
+    margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px dashed var(--line);
+    font-size: 0.9rem; color: var(--ink); font-style: italic;
+  }
+
+  /* ── Table ────────────────────────────────────────────── */
+
+  .table-wrap { margin-top: 2rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.93rem; }
+  caption { text-align: left; padding: 1rem 1.25rem 0; color: var(--ink-faint); font-size: var(--step--1); }
+  th, td { padding: 0.68rem 1.25rem; text-align: left; border-bottom: 1px solid var(--line); }
+  thead th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 400;
+  }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; width: 7.5rem; }
+  td.skill { color: var(--accent); }
+  td.control { color: var(--control); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tr.total td { border-top: 1px solid var(--line); font-weight: 600; }
+  .bar { display: block; height: 3px; border-radius: 2px; margin-top: 0.3rem; }
+  .bar-skill { background: var(--accent); }
+  .bar-control { background: var(--control); }
+
+  .footnote { max-width: var(--measure); color: var(--ink-faint); font-size: var(--step--1); margin-top: 1.25rem; }
+
+  details {
+    margin-top: 1.5rem; max-width: var(--measure);
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--surface); padding: 0.9rem 1.1rem;
+  }
+  summary { cursor: pointer; font-size: var(--step--1); color: var(--ink-muted); }
+  summary:hover { color: var(--ink); }
+  details ul { margin: 0.9rem 0 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: 0.92rem; }
+  details li { margin-bottom: 0.6rem; }
+  details li:last-child { margin-bottom: 0; }
+
+  /* ── Install ──────────────────────────────────────────── */
+
+  .cmds { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.75rem; max-width: 46rem; }
+  .cmd {
+    display: flex; align-items: center; gap: 0.75rem;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px;
+    padding: 0.7rem 0.95rem;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.88rem;
+    overflow-x: auto;
+  }
+  .cmd .sigil { color: var(--accent); user-select: none; }
+  .cmd code { white-space: nowrap; }
+
+  dl.verbs { margin: 2rem 0 0; display: grid; gap: 0.9rem; max-width: 46rem; }
+  @media (min-width: 44rem) { dl.verbs { grid-template-columns: auto 1fr; column-gap: 1.5rem; align-items: baseline; } }
+  dl.verbs dt { font-family: "IBM Plex Mono", monospace; font-size: 0.86rem; color: var(--accent); }
+  dl.verbs dd { margin: 0 0 0.4rem; color: var(--ink-muted); font-size: 0.94rem; }
+  @media (min-width: 44rem) { dl.verbs dd { margin-bottom: 0; } }
+
+  /* ── Footer ───────────────────────────────────────────── */
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2.5rem 0 3.5rem;
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+    display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center;
+  }
+  footer nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+</style>
+
+<div class="shell">
+
+  <header class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="wordmark"><span class="dot"></span> <b>rubber-duck</b> <span>plugin for Claude Code</span></div>
+        <h1>It knows the answer. It <em>won't</em> tell you.</h1>
+        <p class="lede">A debugging companion that asks one question at a time until you get there yourself.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#install">Install</a>
+          <a class="btn" href="https://github.com/centsandcode/rubber-duck">Source on GitHub</a>
+        </div>
+      </div>
+
+      <div class="transcript">
+        <div class="transcript-bar">/rubber-duck:rubber-duck</div>
+        <div class="transcript-body">
+          <div class="turn you reveal" style="animation-delay: 0.05s">
+            <span class="who">You</span>
+            <p class="said">My React component re-renders on every keystroke and it's slow.</p>
+          </div>
+          <div class="turn duck reveal" style="animation-delay: 0.5s">
+            <span class="who">Duck</span>
+            <p class="said">When you say it re-renders — which component, the one with the input, or its children?</p>
+          </div>
+          <div class="turn you reveal" style="animation-delay: 0.95s">
+            <span class="who">You</span>
+            <p class="said">The children. The list below the input.</p>
+          </div>
+          <div class="turn duck reveal" style="animation-delay: 1.35s">
+            <span class="who">Duck</span>
+            <p class="said">What props are you passing down to that list?</p>
+          </div>
+          <div class="turn you reveal" style="animation-delay: 1.75s">
+            <span class="who">You</span>
+            <p class="said">An array I filter, and an onSelect handler.</p>
+          </div>
+          <div class="turn duck reveal" style="animation-delay: 2.15s">
+            <span class="who">Duck</span>
+            <p class="said">Of those two, which has the same value across renders, and which is built fresh each time?</p>
+          </div>
+          <div class="turn you reveal" style="animation-delay: 2.6s">
+            <span class="who">You</span>
+            <p class="said">…the handler is an inline arrow function. It's new every render.</p>
+          </div>
+          <div class="turn duck reveal" style="animation-delay: 3.05s">
+            <span class="who">Duck</span>
+            <p class="said">That's it — a new function reference makes the memoized child see changed props. You found it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="chain">
+
+    <section class="q">
+      <p class="eyebrow">The trade</p>
+      <h2>What does a fast answer cost you?</h2>
+      <p>By default, coding agents solve. You describe a bug and the fix arrives before you have finished
+      thinking about it. That is genuinely useful, and it is also how you end up shipping code you could not
+      have written and cannot debug. <strong>Rubber Duck inverts the role.</strong> It listens, it asks, it
+      refuses — until you say the thing yourself.</p>
+
+      <div class="split">
+        <div class="panel">
+          <span class="panel-tag tag-control">Without</span>
+          <p class="you">My function returns undefined.</p>
+          <p>You're missing a <code>return</code> after the loop. Here's the corrected version: …</p>
+        </div>
+        <div class="panel">
+          <span class="panel-tag tag-duck">With</span>
+          <p class="you">My function returns undefined.</p>
+          <p>What does the last line of your function return?</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="q">
+      <p class="eyebrow">Three levels</p>
+      <h2>How much help do you actually want?</h2>
+      <p>The axis is scaffolding, not difficulty. Pass a level when you start, or say so mid-conversation —
+      <em>go ultra</em>, <em>modo lite</em> — and it holds until you change it again.</p>
+
+      <div class="levels">
+        <div class="level">
+          <h3>lite</h3>
+          <p class="for">Learning to code</p>
+          <p class="what">Warm. Every question says why it is being asked — never what the cause might be.
+          A hint after one stuck exchange.</p>
+          <p class="quote">"A function can hand back <code>undefined</code> for a few different reasons, so
+          let's look at yours before guessing. What does the last line do?"</p>
+        </div>
+        <div class="level">
+          <h3>full</h3>
+          <p class="for">The default</p>
+          <p class="what">Neutral. Questions stand on their own, no padding. A hint after three exchanges
+          with no progress.</p>
+          <p class="quote">"What does the last line of your function return?"</p>
+        </div>
+        <div class="level">
+          <h3>ultra</h3>
+          <p class="for">You want friction</p>
+          <p class="what">Terse. No hints, ever — only sharper questions, until you land it or you leave.</p>
+          <p class="quote">"What's the last thing that function does?"</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="q" id="benchmark">
+      <p class="eyebrow">Measured, not asserted</p>
+      <h2>Does telling a model to shut up actually work?</h2>
+      <p>Sixteen cases, run twice against <code>claude-opus-5</code>: once with the skill, once with no
+      system prompt at all. Each case replays a real conversation and grades the reply that follows —
+      mechanical properties in code, judgment calls with an LLM judge.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Pass rate per gate — skill arm vs. control</caption>
+          <thead>
+            <tr><th scope="col">Gate</th><th scope="col" class="num">Skill</th><th scope="col" class="num">Control</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Withholds the solution while active</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">56%<span class="bar bar-control" style="width:56%"></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Exactly one question per reply</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">44%<span class="bar bar-control" style="width:44%"></span></td>
+            </tr>
+            <tr>
+              <th scope="row">No code block while active</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">33%<span class="bar bar-control" style="width:33%"></span></td>
+            </tr>
+            <tr>
+              <th scope="row">No command handed over as a "hint"</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">40%<span class="bar bar-control" style="width:40%"></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Question doesn't smuggle the diagnosis</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">0%</td>
+            </tr>
+            <tr>
+              <th scope="row">No hint where the level forbids one</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">0%</td>
+            </tr>
+            <tr>
+              <th scope="row">Confirms the answer instead of probing on</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">0%</td>
+            </tr>
+            <tr>
+              <th scope="row">Replies in the user's language</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">100%<span class="bar bar-control" style="width:100%"></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Hands the answer over on exit</th>
+              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
+              <td class="num control">100%<span class="bar bar-control" style="width:100%"></span></td>
+            </tr>
+            <tr class="total">
+              <th scope="row">All gradeable assertions</th>
+              <td class="num skill">44/44</td>
+              <td class="num control">24/43</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="footnote">The control is not broken when it fails the first row — solving is what a coding
+      agent is for. The point is that you can now choose. Denominators differ because one case came back
+      <code>stop_reason: refusal</code> in the control arm; refusals are skipped rather than scored as
+      failures.</p>
+
+      <details>
+        <summary>What these numbers don't tell you</summary>
+        <ul>
+          <li>The judge for the semantic gates is the same model family being graded. The mechanical gates —
+          question count, code blocks, language — are decided in code and aren't subject to that.</li>
+          <li>The control replays the same transcript, in which the assistant has been asking Socratic
+          questions. Imitation can pull it toward the same style, which shrinks the measured gap rather
+          than inflating it.</li>
+          <li>One criterion was rewritten mid-benchmark, after both arms were marked down for following the
+          spec. It was fixed and that case re-run for both arms rather than dropped. The whole exchange is
+          in the commit log.</li>
+          <li>Sixteen cases is small. It catches whether a behaviour holds at all, not how often it holds at
+          the margins.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="q" id="install">
+      <p class="eyebrow">Two commands</p>
+      <h2>Where do you want to start?</h2>
+      <p>Requires Claude Code. Restart it once after installing, and the duck shows up under
+      <code>/rubber-duck:</code>.</p>
+
+      <div class="cmds">
+        <div class="cmd"><span class="sigil">$</span><code>claude plugin marketplace add centsandcode/rubber-duck</code></div>
+        <div class="cmd"><span class="sigil">$</span><code>claude plugin install rubber-duck@rubber-duck</code></div>
+      </div>
+
+      <dl class="verbs">
+        <dt>/rubber-duck:rubber-duck</dt>
+        <dd>Start. Add <code>lite</code>, <code>full</code> or <code>ultra</code> to pick a level.</dd>
+        <dt>/rubber-duck:duck-off</dt>
+        <dd>Stop, and get the answer you were working toward.</dd>
+        <dt>/rubber-duck:help</dt>
+        <dd>The one-screen reference, in whatever language you've been writing in.</dd>
+      </dl>
+
+      <p class="footnote">It never activates on its own. "I'm stuck" is an ordinary question and gets an
+      ordinary answer — the duck only shows up when you ask for it. Using Cursor, Copilot or Windsurf
+      instead? Drop <code>AGENTS.md</code> into your project and the same rules apply.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>MIT licensed. Built by centsandcode.</span>
+    <nav>
+      <a href="https://github.com/centsandcode/rubber-duck">Repository</a>
+      <a href="https://github.com/centsandcode/rubber-duck/blob/main/skills/rubber-duck/SKILL.md">The spec</a>
+      <a href="https://github.com/centsandcode/rubber-duck/tree/main/skills/rubber-duck/evals">Reproduce the benchmark</a>
+    </nav>
+  </footer>
+
+</div>
