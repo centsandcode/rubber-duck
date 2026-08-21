@@ -329,23 +329,7 @@
     background: var(--surface); padding: 1.5rem 1.35rem 1.2rem;
   }
 
-  .rows { display: flex; flex-direction: column; gap: 0.35rem; position: relative; }
-
-  /* Gridlines at 0/50/100 behind the rows. The marks were already on the tick
-     labels to the pixel, but with nothing connecting them the eye had no way
-     to see it. Offsets mirror the plot's own columns. */
-  .rows::before {
-    content: ""; position: absolute; z-index: 0; pointer-events: none;
-    top: 1.9rem; bottom: 0; left: 0; right: calc(2 * 2.7rem + 2 * 0.5rem);
-    background:
-      linear-gradient(var(--line), var(--line)) left  / 1px 100% no-repeat,
-      linear-gradient(var(--line), var(--line)) center/ 1px 100% no-repeat,
-      linear-gradient(var(--line), var(--line)) right / 1px 100% no-repeat;
-  }
-  @media (min-width: 46rem) {
-    .rows::before { left: 18.75rem; right: calc(2 * 3.6rem + 2 * 0.9rem); }
-  }
-  .row { position: relative; z-index: 1; }
+  .rows { display: flex; flex-direction: column; gap: 0.35rem; }
 
   .row { display: grid; grid-template-columns: 1fr; gap: 0.2rem; padding: 0.4rem 0.5rem; border-radius: 7px; margin-inline: -0.5rem; }
   @media (min-width: 46rem) {
