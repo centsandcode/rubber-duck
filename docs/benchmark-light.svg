@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 404" width="900" height="404" role="img" aria-label="Pass rate per gate, with the skill versus without it. Withholds the solution while active 100% vs 56%; Exactly one question per reply 100% vs 44%; No code block while active 100% vs 33%; No command handed over as a hint 100% vs 40%; Question doesn&#39;t smuggle the diagnosis 100% vs 0%; No hint where the level forbids one 100% vs 0%; Confirms the answer instead of probing on 100% vs 0%; Replies in the user&#39;s language 100% vs 100%; Hands the answer over on exit 100% vs 100%">
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="11" letter-spacing="0.9">
+<circle cx="724" cy="26" r="4.5" fill="#a2543a"/>
+<text x="780" y="30" fill="#5c636c" text-anchor="end">CONTROL</text>
+<circle cx="822" cy="26" r="4.5" fill="#1f6fb2"/>
+<text x="862" y="30" fill="#5c636c" text-anchor="end">SKILL</text>
+</g>
+<text x="300" y="69.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Withholds the solution while active</text>
+<line x1="320" y1="69.0" x2="700" y2="69.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="531.7" y1="69.0" x2="691.0" y2="69.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="531.7" cy="69.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="69.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="69.0" fill="#a2543a" text-anchor="end">56%</text>
+<text x="862" y="69.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="103.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Exactly one question per reply</text>
+<line x1="320" y1="103.0" x2="700" y2="103.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="488.3" y1="103.0" x2="691.0" y2="103.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="488.3" cy="103.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="103.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="103.0" fill="#a2543a" text-anchor="end">44%</text>
+<text x="862" y="103.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="137.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">No code block while active</text>
+<line x1="320" y1="137.0" x2="700" y2="137.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="448.5" y1="137.0" x2="691.0" y2="137.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="448.5" cy="137.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="137.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="137.0" fill="#a2543a" text-anchor="end">33%</text>
+<text x="862" y="137.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="171.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">No command handed over as a hint</text>
+<line x1="320" y1="171.0" x2="700" y2="171.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="473.8" y1="171.0" x2="691.0" y2="171.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="473.8" cy="171.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="171.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="171.0" fill="#a2543a" text-anchor="end">40%</text>
+<text x="862" y="171.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="205.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Question doesn&#39;t smuggle the diagnosis</text>
+<line x1="320" y1="205.0" x2="700" y2="205.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="329.0" y1="205.0" x2="691.0" y2="205.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="329.0" cy="205.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="205.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="205.0" fill="#a2543a" text-anchor="end">0%</text>
+<text x="862" y="205.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="239.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">No hint where the level forbids one</text>
+<line x1="320" y1="239.0" x2="700" y2="239.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="329.0" y1="239.0" x2="691.0" y2="239.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="329.0" cy="239.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="239.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="239.0" fill="#a2543a" text-anchor="end">0%</text>
+<text x="862" y="239.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="273.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Confirms the answer instead of probing on</text>
+<line x1="320" y1="273.0" x2="700" y2="273.0" stroke="#dbdee3" stroke-width="1"/>
+<line x1="329.0" y1="273.0" x2="691.0" y2="273.0" stroke="url(#grad)" stroke-width="2"/>
+<circle cx="329.0" cy="273.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="273.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="273.0" fill="#a2543a" text-anchor="end">0%</text>
+<text x="862" y="273.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="307.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Replies in the user&#39;s language</text>
+<line x1="320" y1="307.0" x2="700" y2="307.0" stroke="#dbdee3" stroke-width="1"/>
+<circle cx="691.0" cy="307.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="307.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="307.0" fill="#a2543a" text-anchor="end">100%</text>
+<text x="862" y="307.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<text x="300" y="341.0" fill="#1a1c1f" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13.5" text-anchor="end" dominant-baseline="middle">Hands the answer over on exit</text>
+<line x1="320" y1="341.0" x2="700" y2="341.0" stroke="#dbdee3" stroke-width="1"/>
+<circle cx="691.0" cy="341.0" r="5.5" fill="#a2543a" stroke="#ffffff" stroke-width="2"/>
+<circle cx="691.0" cy="341.0" r="5.5" fill="#1f6fb2" stroke="#ffffff" stroke-width="2"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" dominant-baseline="middle">
+<text x="780" y="341.0" fill="#a2543a" text-anchor="end">100%</text>
+<text x="862" y="341.0" fill="#1f6fb2" text-anchor="end">100%</text>
+</g>
+<line x1="320" y1="364.0" x2="862" y2="364.0" stroke="#dbdee3" stroke-width="1"/>
+<g font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace" font-size="11" fill="#5c636c" text-anchor="middle">
+<text x="329.0" y="382.0">0%</text>
+<text x="510.0" y="382.0">50%</text>
+<text x="691.0" y="382.0">100%</text>
+</g>
+<text x="862" y="382.0" fill="#5c636c" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="end">44/44 vs 24/43 gradeable assertions</text>
+<defs><linearGradient id="grad" x1="0" x2="1"><stop offset="0" stop-color="#a2543a"/><stop offset="1" stop-color="#1f6fb2"/></linearGradient></defs>
+</svg>

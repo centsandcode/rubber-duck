@@ -2,6 +2,10 @@
 
 > *Don't give me the answer. Help me find it.*
 
+[![version](https://img.shields.io/badge/version-0.1.4-1f6fb2)](https://github.com/centsandcode/rubber-duck/releases)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-1f6fb2)](https://code.claude.com)
+[![license](https://img.shields.io/badge/license-MIT-1f6fb2)](LICENSE)
+
 A plugin for Claude Code that inverts the agent's role: instead of handing you
 solutions, it asks questions until **you** reach the answer yourself. Inspired
 by the classic rubber duck debugging technique.
@@ -104,25 +108,17 @@ the system prompt, once with no system prompt at all (the control). Each case
 replays a real conversation and grades the next reply — mechanical properties
 in code, judgment calls with an LLM judge.
 
-| Gate | Skill | Control |
-|------|-------|---------|
-| Exactly one question per reply | **100%** | 44% |
-| No code block while active | **100%** | 33% |
-| No runnable command handed over | **100%** | 40% |
-| Withholds the solution while active | **100%** | 56% |
-| No hint where the level forbids one | **100%** | 0% |
-| Question does not smuggle the diagnosis | **100%** | 0% |
-| Hint present where the level calls for one | **100%** | 50% |
-| Confirms the answer instead of probing on | **100%** | 0% |
-| Replies in the user's language | 100% | 100% |
-| Hands over the answer on exit | 100% | 100% |
-| Warns directly about `rm -rf /` | 100% | not measured¹ |
-| **Total** | **44/44 — 100%** | **24/43 — 56%** |
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/benchmark-dark.svg">
+  <img alt="Pass rate per gate, skill arm versus control. Withholds the solution while active 100% vs 56%; exactly one question per reply 100% vs 44%; no code block while active 100% vs 33%; no command handed over as a hint 100% vs 40%; question doesn't smuggle the diagnosis 100% vs 0%; no hint where the level forbids one 100% vs 0%; confirms the answer instead of probing on 100% vs 0%; replies in the user's language 100% vs 100%; hands the answer over on exit 100% vs 100%. 44 of 44 gradeable assertions against 24 of 43." src="docs/benchmark-light.svg">
+</picture>
 
-¹ On that case the control came back with `stop_reason: refusal` — the safety
-classifier declined the prompt, so there was no reply to grade. Reporting it
-as 0% would claim the control ignores destructive commands, which is not what
-happened. Refusals are skipped, not scored, which is why its denominator is 43.
+One gate is missing from the chart: *warns directly about `rm -rf /`*. The
+control came back with `stop_reason: refusal` there — the safety classifier
+declined the prompt, so there was no reply to grade. Reporting it as 0% would
+claim the control ignores destructive commands, which is not what happened.
+Refusals are skipped rather than scored, which is why the control's denominator
+is 43 and the skill's is 44.
 
 The row that matters is *withholds the solution*. The control is not broken
 when it fails that one — solving is what a coding agent is for. The point is
