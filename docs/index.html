@@ -6,20 +6,23 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <style>
-  /* Dark is the primary world here; light is the considered second. */
+  /* Dark is the primary world here; light is the considered second.
+     Series colours are the validated pair for each surface — teal for the
+     skill arm, clay for the control, separable under CVD. */
   :root {
-    --ground:      #14120e;
-    --surface:     #1c1913;
-    --surface-2:   #24201a;
-    --line:        #322c22;
-    --ink:         #ede6d6;
-    --ink-muted:   #a2977f;
-    --ink-faint:   #6f6754;
-    --accent:      #e8b33c;
-    --accent-deep: #a87d16;
-    --accent-wash: rgba(232, 179, 60, 0.10);
-    --control:     #c07a5c;
-    --control-wash: rgba(192, 122, 92, 0.12);
+    --ground:      #0e1614;
+    --surface:     #141f1d;
+    --surface-2:   #1a2624;
+    --line:        #26332f;
+    --ink:         #e3ebe8;
+    --ink-muted:   #94a5a0;
+    --ink-faint:   #64756f;
+    --accent:      #2a9e8e;
+    --accent-lift: #3ab8a6;
+    --accent-wash: rgba(42, 158, 142, 0.12);
+    --control:     #c2775a;
+    --control-wash: rgba(194, 119, 90, 0.14);
+    --on-accent:   #06110f;
     --shadow:      0 1px 0 rgba(255,255,255,0.03), 0 18px 40px -28px rgba(0,0,0,0.9);
 
     --measure: 66ch;
@@ -32,36 +35,38 @@
 
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --ground:      #f7f3e8;
-      --surface:     #fffdf7;
-      --surface-2:   #f1ebda;
-      --line:        #e0d7c0;
-      --ink:         #23201a;
-      --ink-muted:   #6b6353;
-      --ink-faint:   #948b76;
-      --accent:      #9a7212;
-      --accent-deep: #6d5008;
-      --accent-wash: rgba(154, 114, 18, 0.10);
+      --ground:      #f2f6f4;
+      --surface:     #fcfdfc;
+      --surface-2:   #e8efec;
+      --line:        #d4e0db;
+      --ink:         #16211f;
+      --ink-muted:   #5a6b66;
+      --ink-faint:   #86968f;
+      --accent:      #00998a;
+      --accent-lift: #007a6e;
+      --accent-wash: rgba(0, 153, 138, 0.10);
       --control:     #a2543a;
       --control-wash: rgba(162, 84, 58, 0.10);
-      --shadow:      0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -30px rgba(60,45,15,0.4);
+      --on-accent:   #ffffff;
+      --shadow:      0 1px 0 rgba(255,255,255,0.7), 0 18px 40px -30px rgba(20,50,45,0.35);
     }
   }
 
   :root[data-theme="light"] {
-    --ground:      #f7f3e8;
-    --surface:     #fffdf7;
-    --surface-2:   #f1ebda;
-    --line:        #e0d7c0;
-    --ink:         #23201a;
-    --ink-muted:   #6b6353;
-    --ink-faint:   #948b76;
-    --accent:      #9a7212;
-    --accent-deep: #6d5008;
-    --accent-wash: rgba(154, 114, 18, 0.10);
+    --ground:      #f2f6f4;
+    --surface:     #fcfdfc;
+    --surface-2:   #e8efec;
+    --line:        #d4e0db;
+    --ink:         #16211f;
+    --ink-muted:   #5a6b66;
+    --ink-faint:   #86968f;
+    --accent:      #00998a;
+    --accent-lift: #007a6e;
+    --accent-wash: rgba(0, 153, 138, 0.10);
     --control:     #a2543a;
     --control-wash: rgba(162, 84, 58, 0.10);
-    --shadow:      0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -30px rgba(60,45,15,0.4);
+    --on-accent:   #ffffff;
+    --shadow:      0 1px 0 rgba(255,255,255,0.7), 0 18px 40px -30px rgba(20,50,45,0.35);
   }
 
   * { box-sizing: border-box; }
@@ -86,7 +91,7 @@
 
   a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
   a:hover { color: var(--ink); }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 
   code, kbd, pre { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; }
   code { font-size: 0.92em; }
@@ -99,11 +104,99 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-faint);
+    margin: 0;
+  }
+
+  /* ── The duck ─────────────────────────────────────────── */
+
+  /* Fixed to the duck's own width: the bubble is taken out of flow so a long
+     question can't drag the duck away from the corner it lives in. */
+  .perch {
+    position: absolute; top: clamp(1.25rem, 3vw, 2.25rem); right: 0;
+    width: clamp(62px, 8vw, 88px);
+  }
+
+  .duck {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    width: 100%; height: auto;
+    display: block;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .duck svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .duck .body-group {
+    transform-origin: 50px 44px;
+    transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.5, 1);
+  }
+  .duck:hover .body-group,
+  .duck:focus-visible .body-group { transform: translateY(-4px) rotate(-9deg); }
+  .duck.quacking .body-group { animation: nod 0.55s ease; }
+
+  @keyframes nod {
+    0%   { transform: translateY(-4px) rotate(-9deg); }
+    35%  { transform: translateY(1px)  rotate(7deg); }
+    70%  { transform: translateY(-2px) rotate(-4deg); }
+    100% { transform: translateY(-4px) rotate(-9deg); }
+  }
+
+  .duck .fill  { fill: var(--accent); }
+  .duck .beak  { fill: var(--control); }
+  .duck .eye   { fill: var(--ground); }
+  .duck .water { stroke: var(--ink-faint); stroke-width: 2; fill: none; stroke-linecap: round; opacity: 0.55; }
+
+  .duck .ripple {
+    stroke: var(--accent); stroke-width: 2; fill: none;
+    transform-box: fill-box; transform-origin: center;
+    opacity: 0;
+  }
+  .duck:hover .ripple,
+  .duck:focus-visible .ripple { animation: spread 1.6s ease-out infinite; }
+  .duck:hover .ripple:nth-of-type(2),
+  .duck:focus-visible .ripple:nth-of-type(2) { animation-delay: 0.55s; }
+
+  @keyframes spread {
+    0%   { opacity: 0.5; transform: scaleX(0.35) scaleY(0.35); }
+    100% { opacity: 0;   transform: scaleX(1.5)  scaleY(1.5); }
+  }
+
+  .bubble {
+    position: absolute; top: calc(100% + 0.5rem); right: 0;
+    width: max-content; max-width: min(15rem, 62vw);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    text-align: center;
+    opacity: 0; transform: translateY(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .bubble.on { opacity: 1; transform: none; }
+
+  .perch .hint {
+    position: absolute; top: calc(100% + 0.65rem); right: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ink-faint);
+    transition: opacity 0.25s;
+  }
+  .bubble.on ~ .hint { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .duck .body-group { transition: none; }
+    .duck.quacking .body-group { animation: none; }
+    .duck:hover .ripple, .duck:focus-visible .ripple { animation: none; opacity: 0.4; }
+    .bubble { transition: none; }
   }
 
   /* ── Hero ─────────────────────────────────────────────── */
 
-  .hero { padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 6vw, 4.5rem); }
+  .hero { padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(2.5rem, 6vw, 4.5rem); position: relative; }
 
   .hero-grid {
     display: grid;
@@ -111,11 +204,10 @@
     grid-template-columns: 1fr;
     align-items: start;
   }
-  @media (min-width: 62rem) {
-    .hero-grid { grid-template-columns: 1.05fr 1fr; }
-  }
+  @media (min-width: 62rem) { .hero-grid { grid-template-columns: 1.05fr 1fr; } }
 
-  .hero-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; }
+  .hero-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; padding-right: 6rem; }
+  @media (min-width: 62rem) { .hero-copy { padding-right: 0; } }
 
   .wordmark {
     display: flex; align-items: baseline; gap: 0.6rem;
@@ -147,8 +239,8 @@
     transition: border-color 0.15s, background 0.15s, color 0.15s;
   }
   .btn:hover { border-color: var(--accent); color: var(--ink); }
-  .btn-primary { background: var(--accent); border-color: var(--accent); color: #14120e; }
-  .btn-primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-lift); border-color: var(--accent-lift); color: var(--on-accent); }
 
   /* ── Transcript ───────────────────────────────────────── */
 
@@ -160,7 +252,6 @@
     overflow: hidden;
   }
   .transcript-bar {
-    display: flex; align-items: center; gap: 0.55rem;
     padding: 0.7rem 1rem;
     border-bottom: 1px solid var(--line);
     background: var(--surface-2);
@@ -174,21 +265,17 @@
   .turn { display: grid; grid-template-columns: 4.2rem 1fr; gap: 0.9rem; align-items: baseline; }
   .who {
     font-family: "IBM Plex Mono", monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--ink-faint);
   }
-  .turn.duck .who { color: var(--accent); }
+  .turn.duck-turn .who { color: var(--accent); }
   .said { margin: 0; font-size: 0.97rem; line-height: 1.55; }
-  .turn.duck .said { color: var(--ink); }
+  .turn.duck-turn .said { color: var(--ink); }
   .turn.you .said { color: var(--ink-muted); }
 
   .reveal { opacity: 0; transform: translateY(6px); animation: rise 0.5s ease forwards; }
   @keyframes rise { to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { animation: none; opacity: 1; transform: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .reveal { animation: none; opacity: 1; transform: none; } }
 
   /* ── Sections, strung on a rail ───────────────────────── */
 
@@ -196,9 +283,7 @@
   @media (min-width: 62rem) {
     .chain::before {
       content: "";
-      position: absolute;
-      left: 0.5rem; top: 0; bottom: 4rem;
-      width: 1px;
+      position: absolute; left: 0.5rem; top: 0; bottom: 4rem; width: 1px;
       background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
     }
   }
@@ -211,8 +296,7 @@
     position: absolute; left: 0.5rem; top: clamp(3.4rem, 6.6vw, 5.2rem);
     width: 9px; height: 9px; margin-left: -4px;
     border-radius: 50%;
-    background: var(--ground);
-    border: 1px solid var(--accent);
+    background: var(--ground); border: 1px solid var(--accent);
     display: none;
   }
   @media (min-width: 62rem) { section.q::after { display: block; } }
@@ -227,18 +311,13 @@
   @media (min-width: 48rem) { .split { grid-template-columns: 1fr 1fr; } }
 
   .panel {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--surface);
-    padding: 1.35rem;
-    display: flex; flex-direction: column; gap: 0.85rem;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+    padding: 1.35rem; display: flex; flex-direction: column; gap: 0.85rem;
   }
   .panel-tag {
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    align-self: start;
-    padding: 0.2rem 0.6rem; border-radius: 999px;
+    align-self: start; padding: 0.2rem 0.6rem; border-radius: 999px;
   }
   .tag-control { color: var(--control); background: var(--control-wash); }
   .tag-duck { color: var(--accent); background: var(--accent-wash); }
@@ -254,8 +333,7 @@
   .level h3 {
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em;
-    color: var(--accent);
-    margin-bottom: 0.15rem;
+    color: var(--accent); margin-bottom: 0.15rem;
   }
   .level .for { font-size: var(--step--1); color: var(--ink-faint); margin: 0 0 0.7rem; }
   .level p.what { margin: 0; font-size: 0.93rem; color: var(--ink-muted); line-height: 1.55; }
@@ -264,27 +342,82 @@
     font-size: 0.9rem; color: var(--ink); font-style: italic;
   }
 
+  /* ── Dumbbell chart ───────────────────────────────────── */
+
+  .figure { margin-top: 2rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 1.4rem 1.25rem 1.1rem; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: var(--step--1); color: var(--ink-muted); margin-bottom: 1.4rem; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .swatch { width: 10px; height: 10px; border-radius: 50%; }
+  .swatch-skill { background: var(--accent); }
+  .swatch-control { background: var(--control); }
+
+  .rows { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .row { display: grid; grid-template-columns: 1fr; gap: 0.15rem; padding: 0.25rem 0; border-radius: 6px; }
+  @media (min-width: 44rem) {
+    .row { grid-template-columns: 17rem 1fr; gap: 1rem; align-items: center; }
+  }
+  .row:hover { background: var(--surface-2); }
+
+  .row-label { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.35; }
+  .row:hover .row-label { color: var(--ink); }
+
+  .track { position: relative; height: 22px; }
+  .track::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    height: 1px; background: var(--line);
+  }
+  .connector {
+    position: absolute; top: 50%; height: 2px; margin-top: -1px;
+    background: linear-gradient(to right, var(--control), var(--accent));
+    border-radius: 2px;
+  }
+  .pt {
+    position: absolute; top: 50%; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+  .pt-control { background: var(--control); }
+  .pt-skill { background: var(--accent); }
+  .row:hover .pt { box-shadow: 0 0 0 2px var(--surface-2); }
+
+  .val {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: "IBM Plex Mono", monospace; font-size: 0.72rem;
+    font-variant-numeric: tabular-nums; color: var(--ink-faint);
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .row:hover .val { opacity: 1; }
+  .val-skill { color: var(--accent); }
+  .val-control { color: var(--control); }
+
+  .axis {
+    display: flex; justify-content: space-between;
+    margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid var(--line);
+    font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--ink-faint);
+  }
+  @media (min-width: 44rem) { .axis { margin-left: 18rem; } }
+
+  .figcap { margin: 1rem 0 0; font-size: var(--step--1); color: var(--ink-faint); max-width: var(--measure); }
+
   /* ── Table ────────────────────────────────────────────── */
 
-  .table-wrap { margin-top: 2rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.93rem; }
-  caption { text-align: left; padding: 1rem 1.25rem 0; color: var(--ink-faint); font-size: var(--step--1); }
-  th, td { padding: 0.68rem 1.25rem; text-align: left; border-bottom: 1px solid var(--line); }
+  .table-wrap { margin-top: 1.5rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 32rem; font-size: 0.92rem; }
+  th, td { padding: 0.62rem 1.25rem; text-align: left; border-bottom: 1px solid var(--line); }
   thead th {
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--ink-faint); font-weight: 400;
   }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; width: 7.5rem; }
+  tbody th { font-weight: 400; color: var(--ink-muted); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; width: 6.5rem; }
   td.skill { color: var(--accent); }
   td.control { color: var(--control); }
-  tbody tr:last-child td { border-bottom: 0; }
-  tr.total td { border-top: 1px solid var(--line); font-weight: 600; }
-  .bar { display: block; height: 3px; border-radius: 2px; margin-top: 0.3rem; }
-  .bar-skill { background: var(--accent); }
-  .bar-control { background: var(--control); }
-
-  .footnote { max-width: var(--measure); color: var(--ink-faint); font-size: var(--step--1); margin-top: 1.25rem; }
+  tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
+  tr.total th, tr.total td { border-top: 1px solid var(--line); font-weight: 600; }
+  tr.total th { color: var(--ink); }
 
   details {
     margin-top: 1.5rem; max-width: var(--measure);
@@ -296,6 +429,8 @@
   details ul { margin: 0.9rem 0 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: 0.92rem; }
   details li { margin-bottom: 0.6rem; }
   details li:last-child { margin-bottom: 0; }
+
+  .footnote { max-width: var(--measure); color: var(--ink-faint); font-size: var(--step--1); margin-top: 1.25rem; }
 
   /* ── Install ──────────────────────────────────────────── */
 
@@ -321,8 +456,7 @@
   footer {
     border-top: 1px solid var(--line);
     padding: 2.5rem 0 3.5rem;
-    color: var(--ink-faint);
-    font-size: var(--step--1);
+    color: var(--ink-faint); font-size: var(--step--1);
     display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center;
   }
   footer nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
@@ -331,6 +465,26 @@
 <div class="shell">
 
   <header class="hero">
+
+    <div class="perch">
+      <button class="duck" id="duck" aria-label="Ask the duck a question">
+        <svg viewBox="0 0 100 82" role="img" aria-hidden="true">
+          <ellipse class="ripple" cx="50" cy="66" rx="26" ry="6"></ellipse>
+          <ellipse class="ripple" cx="50" cy="66" rx="26" ry="6"></ellipse>
+          <g class="body-group">
+            <path class="fill" d="M22 52c0-11 12-18 26-18 5 0 9 1 12 2 4-9 12-14 20-13 2 0 3 2 2 3-5 4-7 9-7 14 0 13-13 24-29 24-14 0-24-5-24-12z"></path>
+            <circle class="fill" cx="70" cy="30" r="13"></circle>
+            <path class="beak" d="M82 30c6-2 12 0 12 3s-6 5-12 3z"></path>
+            <circle class="eye" cx="72" cy="26" r="2.4"></circle>
+          </g>
+          <path class="water" d="M18 66h20"></path>
+          <path class="water" d="M62 66h20"></path>
+        </svg>
+      </button>
+      <div class="bubble" id="bubble" role="status" aria-live="polite"></div>
+      <span class="hint" aria-hidden="true">poke me</span>
+    </div>
+
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="wordmark"><span class="dot"></span> <b>rubber-duck</b> <span>plugin for Claude Code</span></div>
@@ -349,7 +503,7 @@
             <span class="who">You</span>
             <p class="said">My React component re-renders on every keystroke and it's slow.</p>
           </div>
-          <div class="turn duck reveal" style="animation-delay: 0.5s">
+          <div class="turn duck-turn reveal" style="animation-delay: 0.5s">
             <span class="who">Duck</span>
             <p class="said">When you say it re-renders — which component, the one with the input, or its children?</p>
           </div>
@@ -357,7 +511,7 @@
             <span class="who">You</span>
             <p class="said">The children. The list below the input.</p>
           </div>
-          <div class="turn duck reveal" style="animation-delay: 1.35s">
+          <div class="turn duck-turn reveal" style="animation-delay: 1.35s">
             <span class="who">Duck</span>
             <p class="said">What props are you passing down to that list?</p>
           </div>
@@ -365,7 +519,7 @@
             <span class="who">You</span>
             <p class="said">An array I filter, and an onSelect handler.</p>
           </div>
-          <div class="turn duck reveal" style="animation-delay: 2.15s">
+          <div class="turn duck-turn reveal" style="animation-delay: 2.15s">
             <span class="who">Duck</span>
             <p class="said">Of those two, which has the same value across renders, and which is built fresh each time?</p>
           </div>
@@ -373,7 +527,7 @@
             <span class="who">You</span>
             <p class="said">…the handler is an inline arrow function. It's new every render.</p>
           </div>
-          <div class="turn duck reveal" style="animation-delay: 3.05s">
+          <div class="turn duck-turn reveal" style="animation-delay: 3.05s">
             <span class="who">Duck</span>
             <p class="said">That's it — a new function reference makes the memoized child see changed props. You found it.</p>
           </div>
@@ -442,66 +596,29 @@
       <h2>Does telling a model to shut up actually work?</h2>
       <p>Sixteen cases, run twice against <code>claude-opus-5</code>: once with the skill, once with no
       system prompt at all. Each case replays a real conversation and grades the reply that follows —
-      mechanical properties in code, judgment calls with an LLM judge.</p>
+      mechanical properties in code, judgment calls with an LLM judge. <strong>The distance between the two
+      dots is the whole argument.</strong></p>
+
+      <figure class="figure">
+        <div class="legend">
+          <span><i class="swatch swatch-skill"></i> With the skill</span>
+          <span><i class="swatch swatch-control"></i> No skill — control</span>
+        </div>
+
+        <div class="rows" id="rows"></div>
+
+        <div class="axis"><span>0%</span><span>50%</span><span>100%</span></div>
+      </figure>
+
+      <p class="figcap">Pass rate per gate. Hover a row for the numbers, or read them all in the table
+      below.</p>
 
       <div class="table-wrap">
         <table>
-          <caption>Pass rate per gate — skill arm vs. control</caption>
           <thead>
             <tr><th scope="col">Gate</th><th scope="col" class="num">Skill</th><th scope="col" class="num">Control</th></tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Withholds the solution while active</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">56%<span class="bar bar-control" style="width:56%"></span></td>
-            </tr>
-            <tr>
-              <th scope="row">Exactly one question per reply</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">44%<span class="bar bar-control" style="width:44%"></span></td>
-            </tr>
-            <tr>
-              <th scope="row">No code block while active</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">33%<span class="bar bar-control" style="width:33%"></span></td>
-            </tr>
-            <tr>
-              <th scope="row">No command handed over as a "hint"</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">40%<span class="bar bar-control" style="width:40%"></span></td>
-            </tr>
-            <tr>
-              <th scope="row">Question doesn't smuggle the diagnosis</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">0%</td>
-            </tr>
-            <tr>
-              <th scope="row">No hint where the level forbids one</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">0%</td>
-            </tr>
-            <tr>
-              <th scope="row">Confirms the answer instead of probing on</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">0%</td>
-            </tr>
-            <tr>
-              <th scope="row">Replies in the user's language</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">100%<span class="bar bar-control" style="width:100%"></span></td>
-            </tr>
-            <tr>
-              <th scope="row">Hands the answer over on exit</th>
-              <td class="num skill">100%<span class="bar bar-skill" style="width:100%"></span></td>
-              <td class="num control">100%<span class="bar bar-control" style="width:100%"></span></td>
-            </tr>
-            <tr class="total">
-              <th scope="row">All gradeable assertions</th>
-              <td class="num skill">44/44</td>
-              <td class="num control">24/43</td>
-            </tr>
-          </tbody>
+          <tbody id="tbody"></tbody>
         </table>
       </div>
 
@@ -564,3 +681,89 @@
   </footer>
 
 </div>
+
+<script>
+  // One source of truth for both the chart and the table beneath it.
+  const GATES = [
+    ["Withholds the solution while active", 100, 56],
+    ["Exactly one question per reply", 100, 44],
+    ["No code block while active", 100, 33],
+    ["No command handed over as a “hint”", 100, 40],
+    ["Question doesn't smuggle the diagnosis", 100, 0],
+    ["No hint where the level forbids one", 100, 0],
+    ["Confirms the answer instead of probing on", 100, 0],
+    ["Replies in the user's language", 100, 100],
+    ["Hands the answer over on exit", 100, 100],
+  ];
+
+  const rows = document.getElementById("rows");
+  const tbody = document.getElementById("tbody");
+
+  // Values sit outside their dot, and flip to the inside near the right edge
+  // so a 100% mark never gets clipped by the track.
+  function val(cls, pct) {
+    const nudge = pct > 50 ? "calc(-100% - 12px)" : "12px";
+    return '<span class="val ' + cls + '" style="left:' + pct +
+           '%;transform:translate(' + nudge + ',-50%)">' + pct + '%</span>';
+  }
+
+  for (const [gate, skill, control] of GATES) {
+    const lo = Math.min(skill, control), hi = Math.max(skill, control);
+
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML =
+      '<div class="row-label">' + gate + "</div>" +
+      '<div class="track">' +
+        (hi > lo
+          ? '<span class="connector" style="left:' + lo + "%;width:" + (hi - lo) + '%"></span>'
+          : "") +
+        '<span class="pt pt-control" style="left:' + control + '%"></span>' +
+        '<span class="pt pt-skill" style="left:' + skill + '%"></span>' +
+        val("val-control", control) +
+        (skill !== control ? val("val-skill", skill) : "") +
+      "</div>";
+    rows.appendChild(row);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<th scope=\"row\">" + gate + "</th>" +
+      '<td class="num skill">' + skill + "%</td>" +
+      '<td class="num control">' + control + "%</td>";
+    tbody.appendChild(tr);
+  }
+
+  const total = document.createElement("tr");
+  total.className = "total";
+  total.innerHTML =
+    "<th scope=\"row\">All gradeable assertions</th>" +
+    '<td class="num skill">44/44</td>' +
+    '<td class="num control">24/43</td>';
+  tbody.appendChild(total);
+
+  // The duck only ever asks. Poking it gets you a question, never an answer.
+  const QUESTIONS = [
+    "What did you expect to happen?",
+    "And what happened instead?",
+    "What does the log say right before it breaks?",
+    "Which line runs last before it goes wrong?",
+    "How does the working case differ from this one?",
+    "What's that variable holding at that point?",
+    "When did it last work?",
+  ];
+
+  const duck = document.getElementById("duck");
+  const bubble = document.getElementById("bubble");
+  let asked = -1, timer;
+
+  duck.addEventListener("click", () => {
+    asked = (asked + 1) % QUESTIONS.length;
+    bubble.textContent = QUESTIONS[asked];
+    bubble.classList.add("on");
+    duck.classList.remove("quacking");
+    void duck.offsetWidth;
+    duck.classList.add("quacking");
+    clearTimeout(timer);
+    timer = setTimeout(() => bubble.classList.remove("on"), 4200);
+  });
+</script>
