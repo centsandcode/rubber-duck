@@ -90,6 +90,6 @@
 <text x="510.0" y="382.0">50%</text>
 <text x="691.0" y="382.0">100%</text>
 </g>
-<text x="862" y="382.0" fill="#5c636c" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="end">44/44 vs 24/43 gradeable assertions</text>
+<text x="300" y="382.0" fill="#5c636c" font-family="ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" text-anchor="end">44/44 vs 24/43 gradeable assertions</text>
 <defs><linearGradient id="grad" x1="0" x2="1"><stop offset="0" stop-color="#a2543a"/><stop offset="1" stop-color="#1f6fb2"/></linearGradient></defs>
 </svg>

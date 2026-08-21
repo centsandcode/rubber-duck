@@ -89,8 +89,10 @@ def svg(theme):
     for pct in (0, 50, 100):
         p.append('<text x="%.1f" y="%.1f">%d%%</text>' % (x_of(pct), ay + 18, pct))
     p.append('</g>')
+    # Under the label column, not on the tick row: right-aligned at V_SKILL it
+    # sat on top of the 100% tick.
     p.append('<text x="%d" y="%.1f" fill="%s" font-family="%s" font-size="12.5" text-anchor="end">'
-             '44/44 vs 24/43 gradeable assertions</text>' % (V_SKILL, ay + 18, c["muted"], SANS))
+             '44/44 vs 24/43 gradeable assertions</text>' % (LABEL_R, ay + 18, c["muted"], SANS))
 
     p.append('<defs><linearGradient id="grad" x1="0" x2="1">'
              '<stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/>'
