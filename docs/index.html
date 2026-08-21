@@ -6,23 +6,23 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <style>
-  /* Dark is the primary world here; light is the considered second.
-     Series colours are the validated pair for each surface — teal for the
-     skill arm, clay for the control, separable under CVD. */
+  /* Neutral grey ground; blue carries every accent. The series pair is the
+     validated one for each surface — blue for the skill arm, clay for the
+     control, ~18 ΔE apart under simulated colour-vision deficiency. */
   :root {
-    --ground:      #0e1614;
-    --surface:     #141f1d;
-    --surface-2:   #1a2624;
-    --line:        #26332f;
-    --ink:         #e3ebe8;
-    --ink-muted:   #94a5a0;
-    --ink-faint:   #64756f;
-    --accent:      #2a9e8e;
-    --accent-lift: #3ab8a6;
-    --accent-wash: rgba(42, 158, 142, 0.12);
+    --ground:      #141517;
+    --surface:     #1b1d20;
+    --surface-2:   #212429;
+    --line:        #2d3138;
+    --ink:         #e6e8ea;
+    --ink-muted:   #9aa0a8;
+    --ink-faint:   #6b7178;
+    --accent:      #4691d6;
+    --accent-lift: #63a5e2;
+    --accent-wash: rgba(70, 145, 214, 0.13);
     --control:     #c2775a;
     --control-wash: rgba(194, 119, 90, 0.14);
-    --on-accent:   #06110f;
+    --on-accent:   #08131d;
     --shadow:      0 1px 0 rgba(255,255,255,0.03), 0 18px 40px -28px rgba(0,0,0,0.9);
 
     --measure: 66ch;
@@ -35,38 +35,38 @@
 
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --ground:      #f2f6f4;
-      --surface:     #fcfdfc;
-      --surface-2:   #e8efec;
-      --line:        #d4e0db;
-      --ink:         #16211f;
-      --ink-muted:   #5a6b66;
-      --ink-faint:   #86968f;
-      --accent:      #00998a;
-      --accent-lift: #007a6e;
-      --accent-wash: rgba(0, 153, 138, 0.10);
+      --ground:      #f4f5f7;
+      --surface:     #ffffff;
+      --surface-2:   #eaecef;
+      --line:        #dbdee3;
+      --ink:         #1a1c1f;
+      --ink-muted:   #5c636c;
+      --ink-faint:   #8b929a;
+      --accent:      #1f6fb2;
+      --accent-lift: #17578c;
+      --accent-wash: rgba(31, 111, 178, 0.10);
       --control:     #a2543a;
       --control-wash: rgba(162, 84, 58, 0.10);
       --on-accent:   #ffffff;
-      --shadow:      0 1px 0 rgba(255,255,255,0.7), 0 18px 40px -30px rgba(20,50,45,0.35);
+      --shadow:      0 1px 0 rgba(255,255,255,0.8), 0 18px 40px -30px rgba(20,25,35,0.3);
     }
   }
 
   :root[data-theme="light"] {
-    --ground:      #f2f6f4;
-    --surface:     #fcfdfc;
-    --surface-2:   #e8efec;
-    --line:        #d4e0db;
-    --ink:         #16211f;
-    --ink-muted:   #5a6b66;
-    --ink-faint:   #86968f;
-    --accent:      #00998a;
-    --accent-lift: #007a6e;
-    --accent-wash: rgba(0, 153, 138, 0.10);
+    --ground:      #f4f5f7;
+    --surface:     #ffffff;
+    --surface-2:   #eaecef;
+    --line:        #dbdee3;
+    --ink:         #1a1c1f;
+    --ink-muted:   #5c636c;
+    --ink-faint:   #8b929a;
+    --accent:      #1f6fb2;
+    --accent-lift: #17578c;
+    --accent-wash: rgba(31, 111, 178, 0.10);
     --control:     #a2543a;
     --control-wash: rgba(162, 84, 58, 0.10);
     --on-accent:   #ffffff;
-    --shadow:      0 1px 0 rgba(255,255,255,0.7), 0 18px 40px -30px rgba(20,50,45,0.35);
+    --shadow:      0 1px 0 rgba(255,255,255,0.8), 0 18px 40px -30px rgba(20,25,35,0.3);
   }
 
   * { box-sizing: border-box; }
@@ -109,40 +109,38 @@
 
   /* ── The duck ─────────────────────────────────────────── */
 
-  /* Fixed to the duck's own width: the bubble is taken out of flow so a long
-     question can't drag the duck away from the corner it lives in. */
   .perch {
     position: absolute; top: clamp(1.25rem, 3vw, 2.25rem); right: 0;
-    width: clamp(62px, 8vw, 88px);
+    width: clamp(66px, 8.5vw, 94px);
   }
 
   .duck {
     background: none; border: 0; padding: 0; cursor: pointer;
-    width: 100%; height: auto;
-    display: block;
+    width: 100%; height: auto; display: block;
     -webkit-tap-highlight-color: transparent;
   }
   .duck svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-  .duck .body-group {
-    transform-origin: 50px 44px;
+  .duck .float {
+    transform-origin: 52px 50px;
     transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.5, 1);
   }
-  .duck:hover .body-group,
-  .duck:focus-visible .body-group { transform: translateY(-4px) rotate(-9deg); }
-  .duck.quacking .body-group { animation: nod 0.55s ease; }
+  .duck:hover .float,
+  .duck:focus-visible .float { transform: translateY(-5px) rotate(-8deg); }
+  .duck.quacking .float { animation: nod 0.6s ease; }
 
   @keyframes nod {
-    0%   { transform: translateY(-4px) rotate(-9deg); }
-    35%  { transform: translateY(1px)  rotate(7deg); }
-    70%  { transform: translateY(-2px) rotate(-4deg); }
-    100% { transform: translateY(-4px) rotate(-9deg); }
+    0%   { transform: translateY(-5px) rotate(-8deg); }
+    30%  { transform: translateY(2px)  rotate(8deg); }
+    60%  { transform: translateY(-3px) rotate(-4deg); }
+    100% { transform: translateY(-5px) rotate(-8deg); }
   }
 
-  .duck .fill  { fill: var(--accent); }
-  .duck .beak  { fill: var(--control); }
-  .duck .eye   { fill: var(--ground); }
-  .duck .water { stroke: var(--ink-faint); stroke-width: 2; fill: none; stroke-linecap: round; opacity: 0.55; }
+  .duck .plumage { fill: var(--accent); }
+  .duck .wing    { fill: var(--ground); opacity: 0.22; }
+  .duck .bill    { fill: var(--control); }
+  .duck .pupil   { fill: var(--ground); }
+  .duck .waterline { stroke: var(--ink-faint); stroke-width: 2.4; fill: none; stroke-linecap: round; opacity: 0.5; }
 
   .duck .ripple {
     stroke: var(--accent); stroke-width: 2; fill: none;
@@ -150,13 +148,13 @@
     opacity: 0;
   }
   .duck:hover .ripple,
-  .duck:focus-visible .ripple { animation: spread 1.6s ease-out infinite; }
+  .duck:focus-visible .ripple { animation: spread 1.7s ease-out infinite; }
   .duck:hover .ripple:nth-of-type(2),
-  .duck:focus-visible .ripple:nth-of-type(2) { animation-delay: 0.55s; }
+  .duck:focus-visible .ripple:nth-of-type(2) { animation-delay: 0.6s; }
 
   @keyframes spread {
-    0%   { opacity: 0.5; transform: scaleX(0.35) scaleY(0.35); }
-    100% { opacity: 0;   transform: scaleX(1.5)  scaleY(1.5); }
+    0%   { opacity: 0.55; transform: scale(0.3); }
+    100% { opacity: 0;    transform: scale(1.55); }
   }
 
   .bubble {
@@ -166,11 +164,10 @@
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 0.5rem 0.8rem;
-    font-size: 0.82rem;
-    line-height: 1.4;
+    font-size: 0.82rem; line-height: 1.4;
     color: var(--ink);
     box-shadow: var(--shadow);
-    text-align: center;
+    text-align: right;
     opacity: 0; transform: translateY(-4px);
     transition: opacity 0.25s ease, transform 0.25s ease;
     pointer-events: none;
@@ -181,15 +178,14 @@
     position: absolute; top: calc(100% + 0.65rem); right: 0;
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
-    white-space: nowrap;
-    color: var(--ink-faint);
+    white-space: nowrap; color: var(--ink-faint);
     transition: opacity 0.25s;
   }
   .bubble.on ~ .hint { opacity: 0; }
 
   @media (prefers-reduced-motion: reduce) {
-    .duck .body-group { transition: none; }
-    .duck.quacking .body-group { animation: none; }
+    .duck .float { transition: none; }
+    .duck.quacking .float { animation: none; }
     .duck:hover .ripple, .duck:focus-visible .ripple { animation: none; opacity: 0.4; }
     .bubble { transition: none; }
   }
@@ -198,22 +194,16 @@
 
   .hero { padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(2.5rem, 6vw, 4.5rem); position: relative; }
 
-  .hero-grid {
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 4.5rem);
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
+  .hero-grid { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); grid-template-columns: 1fr; align-items: start; }
   @media (min-width: 62rem) { .hero-grid { grid-template-columns: 1.05fr 1fr; } }
 
-  .hero-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; padding-right: 6rem; }
+  .hero-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; padding-right: 6.5rem; }
   @media (min-width: 62rem) { .hero-copy { padding-right: 0; } }
 
   .wordmark {
     display: flex; align-items: baseline; gap: 0.6rem;
     font-family: "IBM Plex Mono", monospace;
-    font-size: var(--step--1);
-    letter-spacing: 0.1em;
+    font-size: var(--step--1); letter-spacing: 0.1em;
     color: var(--ink-muted);
   }
   .wordmark b { color: var(--ink); font-weight: 500; }
@@ -228,14 +218,9 @@
 
   .btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.6rem 1.05rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--ink);
-    font-size: var(--step--1);
-    font-weight: 500;
-    text-decoration: none;
+    padding: 0.6rem 1.05rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    font-size: var(--step--1); font-weight: 500; text-decoration: none;
     transition: border-color 0.15s, background 0.15s, color 0.15s;
   }
   .btn:hover { border-color: var(--accent); color: var(--ink); }
@@ -245,28 +230,20 @@
   /* ── Transcript ───────────────────────────────────────── */
 
   .transcript {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow); overflow: hidden;
   }
   .transcript-bar {
-    padding: 0.7rem 1rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface-2);
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.78rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em;
+    padding: 0.7rem 1rem; border-bottom: 1px solid var(--line); background: var(--surface-2);
+    font-family: "IBM Plex Mono", monospace; font-size: 0.78rem;
+    color: var(--ink-faint); letter-spacing: 0.04em;
   }
   .transcript-body { display: flex; flex-direction: column; gap: 1.05rem; padding: 1.4rem 1.25rem; }
 
   .turn { display: grid; grid-template-columns: 4.2rem 1fr; gap: 0.9rem; align-items: baseline; }
   .who {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-faint);
+    font-family: "IBM Plex Mono", monospace; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
   }
   .turn.duck-turn .who { color: var(--accent); }
   .said { margin: 0; font-size: 0.97rem; line-height: 1.55; }
@@ -282,8 +259,7 @@
   .chain { position: relative; padding-bottom: 4rem; }
   @media (min-width: 62rem) {
     .chain::before {
-      content: "";
-      position: absolute; left: 0.5rem; top: 0; bottom: 4rem; width: 1px;
+      content: ""; position: absolute; left: 0.5rem; top: 0; bottom: 4rem; width: 1px;
       background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
     }
   }
@@ -292,12 +268,9 @@
   @media (min-width: 62rem) { section.q { padding-left: 3.25rem; } }
 
   section.q::after {
-    content: "";
-    position: absolute; left: 0.5rem; top: clamp(3.4rem, 6.6vw, 5.2rem);
-    width: 9px; height: 9px; margin-left: -4px;
-    border-radius: 50%;
-    background: var(--ground); border: 1px solid var(--accent);
-    display: none;
+    content: ""; position: absolute; left: 0.5rem; top: clamp(3.4rem, 6.6vw, 5.2rem);
+    width: 9px; height: 9px; margin-left: -4px; border-radius: 50%;
+    background: var(--ground); border: 1px solid var(--accent); display: none;
   }
   @media (min-width: 62rem) { section.q::after { display: block; } }
 
@@ -315,8 +288,8 @@
     padding: 1.35rem; display: flex; flex-direction: column; gap: 0.85rem;
   }
   .panel-tag {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
     align-self: start; padding: 0.2rem 0.6rem; border-radius: 999px;
   }
   .tag-control { color: var(--control); background: var(--control-wash); }
@@ -331,9 +304,8 @@
 
   .level { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 1.3rem; }
   .level h3 {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em;
-    color: var(--accent); margin-bottom: 0.15rem;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.95rem; font-weight: 500;
+    letter-spacing: 0.02em; color: var(--accent); margin-bottom: 0.15rem;
   }
   .level .for { font-size: var(--step--1); color: var(--ink-faint); margin: 0 0 0.7rem; }
   .level p.what { margin: 0; font-size: 0.93rem; color: var(--ink-muted); line-height: 1.55; }
@@ -344,80 +316,80 @@
 
   /* ── Dumbbell chart ───────────────────────────────────── */
 
-  .figure { margin-top: 2rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 1.4rem 1.25rem 1.1rem; }
-
-  .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: var(--step--1); color: var(--ink-muted); margin-bottom: 1.4rem; }
-  .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
-  .swatch { width: 10px; height: 10px; border-radius: 50%; }
-  .swatch-skill { background: var(--accent); }
-  .swatch-control { background: var(--control); }
-
-  .rows { display: flex; flex-direction: column; gap: 0.55rem; }
-
-  .row { display: grid; grid-template-columns: 1fr; gap: 0.15rem; padding: 0.25rem 0; border-radius: 6px; }
-  @media (min-width: 44rem) {
-    .row { grid-template-columns: 17rem 1fr; gap: 1rem; align-items: center; }
+  .figure {
+    margin-top: 2rem; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); padding: 1.5rem 1.35rem 1.2rem;
   }
-  .row:hover { background: var(--surface-2); }
 
-  .row-label { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.35; }
+  .rows { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  .row { display: grid; grid-template-columns: 1fr; gap: 0.2rem; padding: 0.4rem 0.5rem; border-radius: 7px; margin-inline: -0.5rem; }
+  @media (min-width: 46rem) {
+    .row { grid-template-columns: 17.5rem 1fr; gap: 1.25rem; align-items: center; }
+  }
+  .row:not(.head):hover { background: var(--surface-2); }
+
+  .row-label { font-size: 0.89rem; color: var(--ink-muted); line-height: 1.35; }
   .row:hover .row-label { color: var(--ink); }
 
-  .track { position: relative; height: 22px; }
+  /* Track and its two value columns. Numbers live outside the plot, in fixed
+     columns, so a mark can never sit on top of its own label. */
+  .plot { display: grid; grid-template-columns: 1fr 2.7rem 2.7rem; align-items: center; column-gap: 0.5rem; }
+  @media (min-width: 46rem) { .plot { grid-template-columns: 1fr 3.6rem 3.6rem; column-gap: 0.9rem; } }
+
+  .track { position: relative; height: 20px; }
   .track::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 50%;
-    height: 1px; background: var(--line);
+    content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line);
   }
   .connector {
-    position: absolute; top: 50%; height: 2px; margin-top: -1px;
+    position: absolute; top: 50%; height: 2px; margin-top: -1px; border-radius: 2px;
     background: linear-gradient(to right, var(--control), var(--accent));
-    border-radius: 2px;
   }
   .pt {
     position: absolute; top: 50%; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px var(--surface);
+    border-radius: 50%; box-shadow: 0 0 0 2px var(--surface);
   }
   .pt-control { background: var(--control); }
   .pt-skill { background: var(--accent); }
   .row:hover .pt { box-shadow: 0 0 0 2px var(--surface-2); }
 
-  .val {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    font-family: "IBM Plex Mono", monospace; font-size: 0.72rem;
-    font-variant-numeric: tabular-nums; color: var(--ink-faint);
-    opacity: 0; transition: opacity 0.15s;
+  .v {
+    text-align: right;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
   }
-  .row:hover .val { opacity: 1; }
-  .val-skill { color: var(--accent); }
-  .val-control { color: var(--control); }
+  .v-control { color: var(--control); }
+  .v-skill { color: var(--accent); }
+
+  .row.head { padding-bottom: 0.15rem; margin-bottom: 0.5rem; }
+  .row.head .v {
+    font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: flex-end; gap: 0.35rem;
+  }
+  .row.head .swatch { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .sw-control { background: var(--control); }
+  .sw-skill { background: var(--accent); }
 
   .axis {
-    display: flex; justify-content: space-between;
-    margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 2.7rem 2.7rem; column-gap: 0.5rem;
+    margin-top: 0.9rem; padding-top: 0.65rem; border-top: 1px solid var(--line);
     font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--ink-faint);
   }
-  @media (min-width: 44rem) { .axis { margin-left: 18rem; } }
+  @media (min-width: 46rem) {
+    .axis { grid-template-columns: 1fr 3.6rem 3.6rem; column-gap: 0.9rem; margin-left: 18.75rem; }
+  }
+  .axis .ticks { display: flex; justify-content: space-between; }
+
+  .totals {
+    display: flex; flex-wrap: wrap; gap: 0.75rem 2rem;
+    margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--line);
+    font-size: var(--step--1); color: var(--ink-muted);
+  }
+  .totals b { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .totals .t-skill b { color: var(--accent); }
+  .totals .t-control b { color: var(--control); }
 
   .figcap { margin: 1rem 0 0; font-size: var(--step--1); color: var(--ink-faint); max-width: var(--measure); }
-
-  /* ── Table ────────────────────────────────────────────── */
-
-  .table-wrap { margin-top: 1.5rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; min-width: 32rem; font-size: 0.92rem; }
-  th, td { padding: 0.62rem 1.25rem; text-align: left; border-bottom: 1px solid var(--line); }
-  thead th {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-faint); font-weight: 400;
-  }
-  tbody th { font-weight: 400; color: var(--ink-muted); }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace; width: 6.5rem; }
-  td.skill { color: var(--accent); }
-  td.control { color: var(--control); }
-  tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
-  tr.total th, tr.total td { border-top: 1px solid var(--line); font-weight: 600; }
-  tr.total th { color: var(--ink); }
 
   details {
     margin-top: 1.5rem; max-width: var(--measure);
@@ -438,8 +410,7 @@
   .cmd {
     display: flex; align-items: center; gap: 0.75rem;
     background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px;
-    padding: 0.7rem 0.95rem;
-    font-family: "IBM Plex Mono", monospace; font-size: 0.88rem;
+    padding: 0.7rem 0.95rem; font-family: "IBM Plex Mono", monospace; font-size: 0.88rem;
     overflow-x: auto;
   }
   .cmd .sigil { color: var(--accent); user-select: none; }
@@ -454,8 +425,7 @@
   /* ── Footer ───────────────────────────────────────────── */
 
   footer {
-    border-top: 1px solid var(--line);
-    padding: 2.5rem 0 3.5rem;
+    border-top: 1px solid var(--line); padding: 2.5rem 0 3.5rem;
     color: var(--ink-faint); font-size: var(--step--1);
     display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center;
   }
@@ -468,17 +438,18 @@
 
     <div class="perch">
       <button class="duck" id="duck" aria-label="Ask the duck a question">
-        <svg viewBox="0 0 100 82" role="img" aria-hidden="true">
-          <ellipse class="ripple" cx="50" cy="66" rx="26" ry="6"></ellipse>
-          <ellipse class="ripple" cx="50" cy="66" rx="26" ry="6"></ellipse>
-          <g class="body-group">
-            <path class="fill" d="M22 52c0-11 12-18 26-18 5 0 9 1 12 2 4-9 12-14 20-13 2 0 3 2 2 3-5 4-7 9-7 14 0 13-13 24-29 24-14 0-24-5-24-12z"></path>
-            <circle class="fill" cx="70" cy="30" r="13"></circle>
-            <path class="beak" d="M82 30c6-2 12 0 12 3s-6 5-12 3z"></path>
-            <circle class="eye" cx="72" cy="26" r="2.4"></circle>
+        <svg viewBox="0 0 104 78" role="img" aria-hidden="true">
+          <ellipse class="ripple" cx="52" cy="66" rx="30" ry="6"></ellipse>
+          <ellipse class="ripple" cx="52" cy="66" rx="30" ry="6"></ellipse>
+          <g class="float">
+            <path class="plumage" d="M12 36c5 1 9 4 12 8 5-7 15-11 26-11 15 0 27 8 29 19 1 6-3 11-10 13-9 3-22 4-32 2-13-2-22-9-24-19-1-4-2-8-1-12z"></path>
+            <circle class="plumage" cx="74" cy="26" r="15"></circle>
+            <path class="wing" d="M40 48c9-6 21-6 29-1-5 7-14 10-22 8-4-1-6-4-7-7z"></path>
+            <path class="bill" d="M87 22c9-1 16 2 16 6s-7 7-16 6c-3-4-3-8 0-12z"></path>
+            <circle class="pupil" cx="77" cy="21" r="2.8"></circle>
           </g>
-          <path class="water" d="M18 66h20"></path>
-          <path class="water" d="M62 66h20"></path>
+          <path class="waterline" d="M10 64h26"></path>
+          <path class="waterline" d="M68 64h26"></path>
         </svg>
       </button>
       <div class="bubble" id="bubble" role="status" aria-live="polite"></div>
@@ -600,32 +571,25 @@
       dots is the whole argument.</strong></p>
 
       <figure class="figure">
-        <div class="legend">
-          <span><i class="swatch swatch-skill"></i> With the skill</span>
-          <span><i class="swatch swatch-control"></i> No skill — control</span>
-        </div>
-
         <div class="rows" id="rows"></div>
 
-        <div class="axis"><span>0%</span><span>50%</span><span>100%</span></div>
+        <div class="axis">
+          <span class="ticks"><span>0%</span><span>50%</span><span>100%</span></span>
+          <span></span><span></span>
+        </div>
+
+        <div class="totals">
+          <span class="t-skill">With the skill, every gradeable assertion: <b>44/44</b></span>
+          <span class="t-control">Control: <b>24/43</b></span>
+        </div>
       </figure>
 
-      <p class="figcap">Pass rate per gate. Hover a row for the numbers, or read them all in the table
-      below.</p>
+      <p class="figcap">Pass rate per gate. The control's denominator is smaller because one case came back
+      <code>stop_reason: refusal</code> — the safety classifier declined the prompt, so there was no reply
+      to grade, and refusals are skipped rather than scored as failures.</p>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th scope="col">Gate</th><th scope="col" class="num">Skill</th><th scope="col" class="num">Control</th></tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-
-      <p class="footnote">The control is not broken when it fails the first row — solving is what a coding
-      agent is for. The point is that you can now choose. Denominators differ because one case came back
-      <code>stop_reason: refusal</code> in the control arm; refusals are skipped rather than scored as
-      failures.</p>
+      <p>The row that matters is the first one. The control is not broken when it fails that — solving is
+      what a coding agent is for. <strong>The point is that you can now choose.</strong></p>
 
       <details>
         <summary>What these numbers don't tell you</summary>
@@ -683,12 +647,11 @@
 </div>
 
 <script>
-  // One source of truth for both the chart and the table beneath it.
   const GATES = [
     ["Withholds the solution while active", 100, 56],
     ["Exactly one question per reply", 100, 44],
     ["No code block while active", 100, 33],
-    ["No command handed over as a “hint”", 100, 40],
+    ["No command handed over as a hint", 100, 40],
     ["Question doesn't smuggle the diagnosis", 100, 0],
     ["No hint where the level forbids one", 100, 0],
     ["Confirms the answer instead of probing on", 100, 0],
@@ -697,51 +660,37 @@
   ];
 
   const rows = document.getElementById("rows");
-  const tbody = document.getElementById("tbody");
 
-  // Values sit outside their dot, and flip to the inside near the right edge
-  // so a 100% mark never gets clipped by the track.
-  function val(cls, pct) {
-    const nudge = pct > 50 ? "calc(-100% - 12px)" : "12px";
-    return '<span class="val ' + cls + '" style="left:' + pct +
-           '%;transform:translate(' + nudge + ',-50%)">' + pct + '%</span>';
-  }
+  const head = document.createElement("div");
+  head.className = "row head";
+  head.innerHTML =
+    '<div class="row-label"></div>' +
+    '<div class="plot">' +
+      '<div></div>' +
+      '<span class="v v-control"><i class="swatch sw-control"></i>control</span>' +
+      '<span class="v v-skill"><i class="swatch sw-skill"></i>skill</span>' +
+    '</div>';
+  rows.appendChild(head);
 
   for (const [gate, skill, control] of GATES) {
     const lo = Math.min(skill, control), hi = Math.max(skill, control);
-
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML =
-      '<div class="row-label">' + gate + "</div>" +
-      '<div class="track">' +
-        (hi > lo
-          ? '<span class="connector" style="left:' + lo + "%;width:" + (hi - lo) + '%"></span>'
-          : "") +
-        '<span class="pt pt-control" style="left:' + control + '%"></span>' +
-        '<span class="pt pt-skill" style="left:' + skill + '%"></span>' +
-        val("val-control", control) +
-        (skill !== control ? val("val-skill", skill) : "") +
-      "</div>";
+      '<div class="row-label">' + gate + '</div>' +
+      '<div class="plot">' +
+        '<div class="track">' +
+          (hi > lo ? '<span class="connector" style="left:' + lo + '%;width:' + (hi - lo) + '%"></span>' : '') +
+          '<span class="pt pt-control" style="left:' + control + '%"></span>' +
+          '<span class="pt pt-skill" style="left:' + skill + '%"></span>' +
+        '</div>' +
+        '<span class="v v-control">' + control + '%</span>' +
+        '<span class="v v-skill">' + skill + '%</span>' +
+      '</div>';
     rows.appendChild(row);
-
-    const tr = document.createElement("tr");
-    tr.innerHTML =
-      "<th scope=\"row\">" + gate + "</th>" +
-      '<td class="num skill">' + skill + "%</td>" +
-      '<td class="num control">' + control + "%</td>";
-    tbody.appendChild(tr);
   }
 
-  const total = document.createElement("tr");
-  total.className = "total";
-  total.innerHTML =
-    "<th scope=\"row\">All gradeable assertions</th>" +
-    '<td class="num skill">44/44</td>' +
-    '<td class="num control">24/43</td>';
-  tbody.appendChild(total);
-
-  // The duck only ever asks. Poking it gets you a question, never an answer.
+  // The duck only ever asks. Poking it returns a question, never an answer.
   const QUESTIONS = [
     "What did you expect to happen?",
     "And what happened instead?",
